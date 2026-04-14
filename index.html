@@ -1,177 +1,364 @@
-
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+  :root {
+    --bg-1: #fff9f0;
+    --bg-2: #f6f3ff;
+    --card: #fffefb;
+    --ink: #2f2a3a;
+    --muted: #7e7890;
+    --line: #d9cde8;
+    --accent: #ff9fbe;
+    --accent-2: #8fd7ff;
+    --accent-3: #b9f0be;
+    --yes-bg: #eefcf0;
+    --yes-line: #91d2a0;
+    --yes-ink: #2d6d3c;
+    --no-bg: #fff2f5;
+    --no-line: #f4a8bc;
+    --no-ink: #8e3550;
+    --maybe-bg: #f3f1ff;
+    --maybe-line: #c4b3f4;
+    --maybe-ink: #55408e;
+  }
+
   * { box-sizing: border-box; }
-  .cat-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; padding: 2rem 1rem 2.5rem; font-family: var(--font-sans); }
-  .cat-title { font-size: 20px; font-weight: 500; color: #b06fa0; letter-spacing: 0.04em; }
-  .cat-subtitle { font-size: 13px; color: #c9a0c0; margin-top: -0.8rem; }
-  .q-row { display: flex; gap: 8px; width: 100%; max-width: 420px; }
-  .q-row input { flex: 1; padding: 10px 14px; border-radius: 50px; border: 1.5px solid #e8c5e0; background: #fdf4fb; color: #7a4a72; font-size: 14px; outline: none; }
-  .q-row input::placeholder { color: #d4a8cc; }
-  .q-row input:focus { border-color: #c47ab8; }
-  .ask-btn { padding: 10px 20px; border-radius: 50px; border: none; background: #e8a0d8; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
-  .ask-btn:hover { background: #d885c8; }
-  .ask-btn:active { transform: scale(0.96); }
-  .cat-container { cursor: pointer; position: relative; width: 180px; height: 180px; }
-  @keyframes bounce { 0%,100% { transform: translateY(0) rotate(0deg); } 20% { transform: translateY(-14px) rotate(-5deg); } 40% { transform: translateY(-8px) rotate(4deg); } 60% { transform: translateY(-16px) rotate(-3deg); } 80% { transform: translateY(-6px) rotate(2deg); } }
-  @keyframes blink { 0%,90%,100% { transform: scaleY(1); } 95% { transform: scaleY(0.08); } }
-  @keyframes appear { 0% { opacity: 0; transform: translateY(10px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-  .bouncing { animation: bounce 0.7s cubic-bezier(.36,.07,.19,.97); }
-  .eye-group { animation: blink 4s infinite; transform-origin: center; }
-  .answer-bubble { border-radius: 20px; padding: 14px 22px; font-size: 15px; font-weight: 500; max-width: 340px; text-align: center; animation: appear 0.35s ease; position: relative; line-height: 1.5; }
-  .answer-bubble::before { content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); border: 8px solid transparent; border-top: none; }
-  .answer-bubble::after { content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); border: 7px solid transparent; border-top: none; }
-  .hint-text { font-size: 12px; color: #d4a8cc; }
-  .paws-row { display: flex; gap: 6px; opacity: 0.3; }
-  .count-badge { font-size: 12px; color: #c9a0c0; background: #fdf0fb; border: 1px solid #e8c5e0; border-radius: 50px; padding: 3px 12px; }
+
+  .luna-wrap {
+    font-family: 'VT323', monospace;
+    color: var(--ink);
+    width: min(740px, 100%);
+    margin: 0 auto;
+    padding: 20px;
+    border: 3px solid var(--line);
+    background:
+      linear-gradient(0deg, rgba(255,255,255,0.45), rgba(255,255,255,0.45)),
+      repeating-linear-gradient(45deg, #fff 0 8px, #fff8ff 8px 16px);
+    box-shadow: 0 6px 0 #e8def5, 0 0 0 6px #fff;
+    border-radius: 16px;
+  }
+
+  .luna-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(14px, 2vw, 18px);
+    line-height: 1.5;
+    margin: 0 0 8px;
+    text-align: center;
+    color: #5f4f73;
+    text-shadow: 2px 2px 0 #fff;
+  }
+
+  .luna-sub {
+    margin: 0 0 16px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 24px;
+  }
+
+  .luna-panel {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .q-input {
+    width: 100%;
+    border: 3px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    padding: 12px 14px;
+    font-size: 26px;
+    color: var(--ink);
+    outline: none;
+  }
+
+  .q-input:focus { border-color: #bba7eb; }
+
+  .ask-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    border: 3px solid #8fc2d8;
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: #2e4455;
+    background: linear-gradient(180deg, #d7f3ff, #b7e7fb);
+    cursor: pointer;
+    transition: transform .08s ease;
+  }
+
+  .ask-btn:active { transform: translateY(2px); }
+
+  .stage {
+    margin-top: 12px;
+    display: grid;
+    place-items: center;
+    gap: 10px;
+  }
+
+  .cat-btn {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  #lunaSvg { width: 190px; height: 190px; image-rendering: pixelated; }
+
+  .idle-float { animation: idleFloat 2.8s ease-in-out infinite; }
+  .blink { animation: blink 4.8s steps(1, end) infinite; transform-origin: center; }
+  .wiggle { animation: wiggle .42s steps(2, end); }
+
+  @keyframes idleFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    94% { transform: scaleY(0.15); }
+  }
+  @keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+    75% { transform: rotate(-1deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .answer {
+    min-height: 76px;
+    width: min(470px, 100%);
+    border: 3px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    padding: 12px 14px;
+    font-size: 29px;
+    line-height: 1.15;
+    display: grid;
+    gap: 8px;
+    align-content: center;
+  }
+
+  .tone-tag {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    letter-spacing: .04em;
+    width: fit-content;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 2px solid;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 22px;
+    color: var(--muted);
+  }
+
+  .log {
+    margin-top: 8px;
+    border: 3px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    padding: 10px 12px;
+  }
+
+  .log h4 {
+    margin: 0 0 8px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: #6b5f80;
+  }
+
+  .log ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 22px;
+    color: #5b5569;
+  }
+
+  .hint {
+    text-align: center;
+    font-size: 20px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    clip: rect(0, 0, 0, 0);
+    overflow: hidden;
+  }
+
+  @media (max-width: 640px) {
+    .luna-panel { grid-template-columns: 1fr; }
+    .ask-btn { width: 100%; }
+  }
 </style>
 
-<div class="cat-wrap">
-  <h2 class="sr-only">Cat Oracle — tap the cat for a funny random answer</h2>
-  <div class="cat-title">✨ the cat oracle ✨</div>
-  <p class="cat-subtitle">the all-knowing, occasionally napping authority</p>
+<div class="luna-wrap">
+  <h2 class="sr-only">Luna - the Oracle Kitty</h2>
+  <h3 class="luna-title">Luna - the Oracle Kitty</h3>
+  <p class="luna-sub">Tap Luna for a tiny prophecy with attitude.</p>
 
-  <div class="q-row">
-    <input type="text" id="catq" placeholder="will today be a good day?" />
-    <button class="ask-btn" onclick="askCat()">ask kitty</button>
+  <div class="luna-panel">
+    <input class="q-input" id="catq" type="text" placeholder="Ask Luna anything..." />
+    <button class="ask-btn" id="askBtn">ASK LUNA</button>
   </div>
 
-  <div class="cat-container" onclick="askCat()" id="catWrap">
-    <svg viewBox="0 0 180 180" width="180" height="180" xmlns="http://www.w3.org/2000/svg" id="catSvg">
-      <defs>
-        <radialGradient id="bodyGrad" cx="45%" cy="38%" r="62%"><stop offset="0%" stop-color="#f9e4f5"/><stop offset="100%" stop-color="#f0c8e8"/></radialGradient>
-        <radialGradient id="innerEarGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f4b8dc"/><stop offset="100%" stop-color="#e890cc"/></radialGradient>
-        <radialGradient id="noseGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f4a0cc"/><stop offset="100%" stop-color="#e070b0"/></radialGradient>
-        <radialGradient id="eyeGrad" cx="35%" cy="30%" r="65%"><stop offset="0%" stop-color="#b882d4"/><stop offset="100%" stop-color="#7c42a8"/></radialGradient>
-        <radialGradient id="bellyGrad" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fef0fa"/><stop offset="100%" stop-color="#fce0f5"/></radialGradient>
-      </defs>
-      <ellipse cx="90" cy="174" rx="48" ry="6" fill="#e8b8e0" opacity="0.3"/>
-      <polygon points="28,62 52,20 72,62" fill="url(#bodyGrad)" stroke="#e8b8e0" stroke-width="1.5"/>
-      <polygon points="38,58 52,30 66,58" fill="url(#innerEarGrad)" opacity="0.85"/>
-      <polygon points="108,62 128,20 152,62" fill="url(#bodyGrad)" stroke="#e8b8e0" stroke-width="1.5"/>
-      <polygon points="114,58 128,30 142,58" fill="url(#innerEarGrad)" opacity="0.85"/>
-      <circle cx="90" cy="98" r="72" fill="url(#bodyGrad)" stroke="#e8b8e0" stroke-width="1.5"/>
-      <ellipse cx="90" cy="112" rx="34" ry="40" fill="url(#bellyGrad)" opacity="0.7"/>
-      <ellipse cx="68" cy="88" rx="14" ry="16" fill="white" opacity="0.9"/>
-      <ellipse cx="112" cy="88" rx="14" ry="16" fill="white" opacity="0.9"/>
-      <g class="eye-group" style="transform-origin: 68px 88px;"><ellipse cx="68" cy="89" rx="9" ry="13" fill="url(#eyeGrad)"/><ellipse cx="65" cy="85" rx="3" ry="4" fill="white" opacity="0.6"/><ellipse cx="70" cy="92" rx="1.5" ry="2" fill="white" opacity="0.4"/></g>
-      <g class="eye-group" style="transform-origin: 112px 88px;"><ellipse cx="112" cy="89" rx="9" ry="13" fill="url(#eyeGrad)"/><ellipse cx="109" cy="85" rx="3" ry="4" fill="white" opacity="0.6"/><ellipse cx="114" cy="92" rx="1.5" ry="2" fill="white" opacity="0.4"/></g>
-      <polygon points="90,104 85,109 95,109" fill="url(#noseGrad)"/>
-      <path d="M85,109 Q90,115 95,109" fill="none" stroke="#e070b0" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="30" y1="105" x2="76" y2="108" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="30" y1="112" x2="76" y2="112" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="34" y1="119" x2="76" y2="116" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="150" y1="105" x2="104" y2="108" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="150" y1="112" x2="104" y2="112" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="146" y1="119" x2="104" y2="116" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <ellipse cx="52" cy="102" rx="11" ry="7" fill="#f4a0c8" opacity="0.35"/>
-      <ellipse cx="128" cy="102" rx="11" ry="7" fill="#f4a0c8" opacity="0.35"/>
-      <circle cx="90" cy="68" r="4" fill="#e8a0d8" opacity="0.5"/>
-      <circle cx="90" cy="68" r="2" fill="#d070c0" opacity="0.7"/>
-    </svg>
+  <div class="stage">
+    <button class="cat-btn idle-float" id="catWrap" aria-label="Ask Luna">
+      <svg id="lunaSvg" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="33" y="40" width="24" height="24" fill="#ffd3e2"/>
+        <rect x="123" y="40" width="24" height="24" fill="#ffd3e2"/>
+        <rect x="40" y="50" width="100" height="94" rx="16" fill="#ffe7f0" stroke="#d8bed4" stroke-width="3"/>
+        <rect x="54" y="90" width="72" height="42" rx="18" fill="#fff5fa"/>
+        <circle cx="66" cy="84" r="8" fill="#fff"/>
+        <circle cx="114" cy="84" r="8" fill="#fff"/>
+        <g class="blink">
+          <rect x="62" y="80" width="8" height="10" rx="2" fill="#5b4f79"/>
+          <rect x="110" y="80" width="8" height="10" rx="2" fill="#5b4f79"/>
+        </g>
+        <rect x="86" y="95" width="8" height="6" rx="2" fill="#f193b1"/>
+        <path d="M78 102 Q90 112 102 102" stroke="#bb6d8d" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M48 100 L76 102 M48 108 L76 108 M132 100 L104 102 M132 108 L104 108" stroke="#c6a7bd" stroke-width="2" />
+        <circle cx="54" cy="98" r="5" fill="#ffb6cb" opacity=".45"/>
+        <circle cx="126" cy="98" r="5" fill="#ffb6cb" opacity=".45"/>
+        <ellipse cx="90" cy="162" rx="35" ry="6" fill="#d6cae8" opacity=".45"/>
+      </svg>
+    </button>
+
+    <div class="answer" id="catAnswer">
+      <span class="tone-tag" id="toneTag">READY</span>
+      <span id="answerText">Luna is listening.</span>
+    </div>
+
+    <div class="meta">
+      <span id="mood">Mood: Soft chaos</span>
+      <span id="countBadge">0 / 30 discovered</span>
+    </div>
   </div>
 
-  <div id="catAnswer" style="min-height:60px;display:flex;align-items:center;justify-content:center;width:100%;max-width:360px;"></div>
-  <div id="countWrap" style="display:none;"><span class="count-badge" id="countBadge"></span></div>
-  <div class="paws-row"><span style="font-size:14px;">🐾</span><span style="font-size:14px;">🐾</span><span style="font-size:14px;">🐾</span></div>
-  <p class="hint-text">tap the kitty or press ask kitty</p>
+  <div class="log">
+    <h4>RECENT WHISPERS</h4>
+    <ul id="historyList"><li>No prophecies yet.</li></ul>
+  </div>
+
+  <p class="hint">Press Enter, Space, or click Luna.</p>
 </div>
 
 <script>
-const all = [
-  ["Yes, and I want credit for telling you.", "yes"],
-  ["Purrfectly yes. Obviously.", "yes"],
-  ["The whiskers say yes. Trust the whiskers.", "yes"],
-  ["Yes! Now go get me a snack.", "yes"],
-  ["Absolutely. The oracle has napped on it.", "yes"],
-  ["Signs point to yes, but lower your expectations anyway.", "yes"],
-  ["Meow-nifestly so. ✨", "yes"],
-  ["Yes, but only if you pet me first.", "yes"],
-  ["The ancient cats have Googled it. Yes.", "yes"],
-  ["A thousand suns say YES!", "yes"],
-  ["Yes, and honestly good for you.", "yes"],
-  ["Yep. You're welcome. Now leave me alone.", "yes"],
-  ["Stars aligned. Moon approved. Cat confirmed: yes.", "yes"],
-  ["Yes, and the oracle would like a treat now.", "yes"],
-  ["Without a doubt. The oracle is rarely wrong and never sorry.", "yes"],
+  const responses = [
+    ["Yes. Quietly confident yes.", "yes"],
+    ["Green light. Keep it simple and move.", "yes"],
+    ["Very yes. Luna already approved this plan.", "yes"],
+    ["Yes, with good timing.", "yes"],
+    ["Yes. You are not overthinking this one.", "yes"],
+    ["No. Save your energy for a better idea.", "no"],
+    ["Hard no. That's a future headache.", "no"],
+    ["Not today. Let this one pass.", "no"],
+    ["No, and Luna rarely repeats herself.", "no"],
+    ["No. Your peace is worth more.", "no"],
+    ["Maybe. Ask after a snack and a walk.", "maybe"],
+    ["Could go either way. Test a tiny version first.", "maybe"],
+    ["Unclear. Give it one more day.", "maybe"],
+    ["Maybe. Good idea, wrong timing.", "maybe"],
+    ["Fuzzy signal. Try a cleaner question.", "maybe"],
+    ["Yes. Someone will notice your effort.", "yes"],
+    ["No. That's a detour in cute packaging.", "no"],
+    ["Maybe, but only if you keep it low drama.", "maybe"],
+    ["Yes. Tiny steps win this one.", "yes"],
+    ["No. Luna says protect your schedule.", "no"],
+    ["Maybe. Ask your future self in 24 hours.", "maybe"],
+    ["Yes. This has cozy momentum.", "yes"],
+    ["No. The vibe check failed.", "no"],
+    ["Maybe. Needs one practical tweak.", "maybe"],
+    ["Yes. You are ready enough.", "yes"],
+    ["No. Respectfully, absolutely not.", "no"],
+    ["Maybe. Start small and let it grow.", "maybe"],
+    ["Yes. Quietly iconic move.", "yes"],
+    ["No. That's glitter on a bad plan.", "no"],
+    ["Maybe. Data first, confidence second.", "maybe"]
+  ];
 
-  ["Lol, no. 🙀", "no"],
-  ["The oracle knocked that idea off the table.", "no"],
-  ["I hissed at this question. That's a no.", "no"],
-  ["My tail is puffy. Absolutely not.", "no"],
-  ["No. And please stop asking.", "no"],
-  ["The vibes are terrible. Do not proceed.", "no"],
-  ["Hard no. The oracle has standards.", "no"],
-  ["Not in this lifetime, bestie.", "no"],
-  ["I knocked your dreams off the counter. No.", "no"],
-  ["No. The oracle went back to sleep after this.", "no"],
-  ["Oh honey. No.", "no"],
-  ["The oracle stared at this for 9 minutes and still says no.", "no"],
-  ["I would rather knock over a full glass than say yes.", "no"],
-  ["No. The ears are flat. This is final.", "no"],
-  ["Negative. The oracle is not accepting appeals.", "no"],
+  const toneStyles = {
+    yes:   { bg: "var(--yes-bg)", line: "var(--yes-line)", ink: "var(--yes-ink)", label: "YES ENERGY" },
+    no:    { bg: "var(--no-bg)", line: "var(--no-line)", ink: "var(--no-ink)", label: "NOPE SIGNAL" },
+    maybe: { bg: "var(--maybe-bg)", line: "var(--maybe-line)", ink: "var(--maybe-ink)", label: "MAYBE CLOUD" }
+  };
 
-  ["The yarn is tangled. Ask again.", "maybe"],
-  ["Hmm. The oracle is 50% asleep, 50% uncertain.", "maybe"],
-  ["Unclear. I was distracted by a bug on the wall.", "maybe"],
-  ["The crystal ball is behind the couch. Give me a moment.", "maybe"],
-  ["Maybe? The oracle refuses to be held to this.", "maybe"],
-  ["Ask again. I blinked at the wrong moment.", "maybe"],
-  ["The oracle is choosing chaos today.", "maybe"],
-  ["Concentrate harder. Also bring tuna.", "maybe"],
-  ["My third eye is blinking. Try again.", "maybe"],
-  ["Possible. The oracle needs more information and also a nap.", "maybe"],
-  ["The signs are... confusing. Much like you.", "maybe"],
-  ["The oracle shrugs magnificently.", "maybe"],
-  ["Even my nine lives can't agree on this one.", "maybe"],
-  ["The future is fuzzy. Like me.", "maybe"],
-  ["I sat on the answer and now I can't find it.", "maybe"],
-];
+  const moods = ["Mint Mischief", "Soft Chaos", "Polite Menace", "Velvet Confidence", "Warm Stardust"];
+  document.getElementById("mood").textContent = "Mood: " + moods[Math.floor(Math.random() * moods.length)];
 
-const colors = {
-  yes:   { bg: '#f0faf4', border: '#98dab8', text: '#2a7a52', tip: '#98dab8' },
-  no:    { bg: '#fff0f4', border: '#f4b0c0', text: '#9a3050', tip: '#f4b0c0' },
-  maybe: { bg: '#f5f0ff', border: '#c8aaf0', text: '#6040a0', tip: '#c8aaf0' },
-};
+  const used = new Set();
+  const history = [];
+  let busy = false;
 
-let used = [];
-let busy = false;
+  function pickFresh() {
+    if (used.size === responses.length) used.clear();
+    let i = Math.floor(Math.random() * responses.length);
+    while (used.has(i)) i = Math.floor(Math.random() * responses.length);
+    used.add(i);
+    return responses[i];
+  }
 
-function pickFresh() {
-  if (used.length === all.length) used = [];
-  const pool = all.filter((_, i) => !used.includes(i));
-  const idx = all.indexOf(pool[Math.floor(Math.random() * pool.length)]);
-  used.push(idx);
-  return all[idx];
-}
+  function renderHistory() {
+    const ul = document.getElementById("historyList");
+    if (!history.length) {
+      ul.innerHTML = "<li>No prophecies yet.</li>";
+      return;
+    }
+    ul.innerHTML = history.slice(-4).reverse().map(item => `<li>${item}</li>`).join("");
+  }
 
-function askCat() {
-  if (busy) return;
-  busy = true;
-  const wrap = document.getElementById('catWrap');
-  const ans = document.getElementById('catAnswer');
-  const cw = document.getElementById('countWrap');
-  const cb = document.getElementById('countBadge');
-  ans.innerHTML = '';
-  wrap.classList.add('bouncing');
-  setTimeout(() => {
-    wrap.classList.remove('bouncing');
+  function askCat() {
+    if (busy) return;
+    busy = true;
+
     const [text, tone] = pickFresh();
-    const c = colors[tone];
-    ans.innerHTML = `<div class="answer-bubble" style="background:${c.bg};border:1.5px solid ${c.border};color:${c.text};">${text}</div>`;
-    const el = ans.querySelector('.answer-bubble');
-    el.style.setProperty('--tip', c.tip);
-    el.style.cssText += `--tip:${c.tip};`;
-    ans.querySelector('.answer-bubble').insertAdjacentHTML('beforebegin','');
-    const style = document.createElement('style');
-    style.textContent = `.answer-bubble::before{border-bottom-color:${c.border}!important}.answer-bubble::after{border-bottom-color:${c.bg}!important}`;
-    document.head.appendChild(style);
-    cw.style.display = 'block';
-    cb.textContent = `${used.length} of ${all.length} answers discovered 🐾`;
-    busy = false;
-  }, 720);
-}
+    const c = toneStyles[tone];
+    const answer = document.getElementById("catAnswer");
+    const toneTag = document.getElementById("toneTag");
+    const answerText = document.getElementById("answerText");
+    const wrap = document.getElementById("catWrap");
+    const count = document.getElementById("countBadge");
 
-document.getElementById('catq').addEventListener('keydown', e => {
-  if (e.key === 'Enter') askCat();
-});
+    wrap.classList.add("wiggle");
+
+    setTimeout(() => {
+      answer.style.background = c.bg;
+      answer.style.borderColor = c.line;
+      answerText.style.color = c.ink;
+      toneTag.textContent = c.label;
+      toneTag.style.background = "#fff";
+      toneTag.style.borderColor = c.line;
+      toneTag.style.color = c.ink;
+      answerText.textContent = text;
+      count.textContent = `${used.size} / ${responses.length} discovered`;
+      history.push(text);
+      renderHistory();
+      wrap.classList.remove("wiggle");
+      busy = false;
+    }, 260);
+  }
+
+  document.getElementById("askBtn").addEventListener("click", askCat);
+  document.getElementById("catWrap").addEventListener("click", askCat);
+  document.getElementById("catq").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") askCat();
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.code === "Space") {
+      e.preventDefault();
+      askCat();
+    }
+  });
 </script>
