@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Luna ✦ Cat Oracle</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --yes-bg:#e8faf2;--yes-border:#7dcca8;--yes-text:#236648;
+    --no-bg:#fff0f6;--no-border:#f4a0c0;--no-text:#8c2850;
+    --maybe-bg:#f2eeff;--maybe-border:#b890e0;--maybe-text:#5838a8;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Nunito',sans-serif;
+    min-height:100vh;
+    background:#0c0616;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;position:relative;
+  }
+  .stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .star{
+    position:absolute;border-radius:50%;background:#fff;
+    animation:twinkle var(--d,3s) var(--delay,0s) infinite ease-in-out alternate;
+  }
+  @keyframes twinkle{0%{opacity:.07;transform:scale(.8)}100%{opacity:.9;transform:scale(1.3)}}
+  .float-paw{
+    position:fixed;font-size:18px;opacity:0;pointer-events:none;z-index:0;
+    animation:floatUp var(--fd,4s) var(--fdelay,0s) infinite ease-in;
+  }
+  @keyframes floatUp{
+    0%{opacity:0;transform:translateY(0) rotate(var(--rot,0deg)) scale(.7)}
+    15%{opacity:.18}85%{opacity:.06}
+    100%{opacity:0;transform:translateY(-130px) rotate(calc(var(--rot,0deg)+20deg)) scale(1)}
+  }
+  .card{
+    position:relative;z-index:10;
+    background:linear-gradient(160deg,#180d2c 0%,#110820 55%,#160a26 100%);
+    border-radius:32px;
+    border:1px solid rgba(170,130,240,.2);
+    padding:2.4rem 2rem 2rem;
+    width:min(440px,94vw);
+    display:flex;flex-direction:column;align-items:center;gap:1.05rem;
+    box-shadow:0 0 70px rgba(130,70,220,.13),0 0 140px rgba(100,50,190,.07),
+               inset 0 1px 0 rgba(200,160,255,.1);
+  }
+  .card::before{
+    content:'';position:absolute;inset:-1.5px;border-radius:34px;
+    background:linear-gradient(135deg,rgba(190,150,255,.28),rgba(150,110,240,.1),rgba(210,170,255,.13),rgba(140,90,230,.22));
+    z-index:-1;
+  }
+  .oracle-title{
+    font-family:'Cinzel Decorative',serif;font-size:20px;font-weight:700;
+    color:#d4b0ff;letter-spacing:.1em;text-align:center;
+    text-shadow:0 0 24px rgba(180,120,255,.45),0 0 48px rgba(160,100,255,.2);
+  }
+  .oracle-sub{
+    font-size:12px;color:#7a6090;text-align:center;margin-top:-.4rem;
+    letter-spacing:.05em;font-style:italic;
+  }
+
+  /* cat */
+  .cat-stage{
+    cursor:pointer;width:200px;height:210px;position:relative;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .cat-stage::after{
+    content:'';position:absolute;inset:20px;border-radius:50%;
+    background:radial-gradient(circle,rgba(180,120,255,.1) 0%,transparent 70%);
+    pointer-events:none;animation:glowPulse 3s ease-in-out infinite alternate;
+  }
+  @keyframes glowPulse{0%{opacity:.4;transform:scale(.93)}100%{opacity:1;transform:scale(1.07)}}
+  @keyframes bounce{
+    0%,100%{transform:translateY(0) rotate(0deg)}
+    18%{transform:translateY(-18px) rotate(-6deg)}
+    36%{transform:translateY(-10px) rotate(5deg)}
+    54%{transform:translateY(-20px) rotate(-4deg)}
+    72%{transform:translateY(-8px)  rotate(3deg)}
+    88%{transform:translateY(-4px)  rotate(-1deg)}
+  }
+  /* SYNCED blink — same delay, same timing */
+  @keyframes eyeBlink{
+    0%,80%,100%{transform:scaleY(1)}
+    88%{transform:scaleY(0.04)}
+  }
+  .bouncing{animation:bounce .75s cubic-bezier(.36,.07,.19,.97)}
+  .eye-l{animation:eyeBlink 4.5s 0s infinite;transform-origin:68px 91px}
+  .eye-r{animation:eyeBlink 4.5s 0s infinite;transform-origin:112px 91px}
+
+  .sparkle{position:absolute;pointer-events:none;animation:sparkOut .9s ease forwards}
+  @keyframes sparkOut{
+    0%{opacity:1;transform:translate(0,0) scale(1)}
+    100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.15)}
+  }
+
+  /* input */
+  .q-row{display:flex;gap:8px;width:100%}
+  .q-input{
+    flex:1;padding:11px 18px;border-radius:50px;
+    border:1px solid rgba(170,130,255,.25);
+    background:rgba(255,255,255,.05);
+    color:#ddd0ff;font-family:'Nunito',sans-serif;font-size:14px;outline:none;
+    transition:border-color .2s,box-shadow .2s;
+  }
+  .q-input::placeholder{color:#5a4070}
+  .q-input:focus{border-color:rgba(170,120,255,.5);box-shadow:0 0 0 3px rgba(150,90,255,.1)}
+  .ask-btn{
+    padding:11px 22px;border-radius:50px;border:none;
+    background:linear-gradient(135deg,#8858c8,#5828a0);
+    color:#ecdeff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
+    cursor:pointer;white-space:nowrap;letter-spacing:.02em;
+    transition:opacity .2s,transform .1s,box-shadow .2s;
+    box-shadow:0 4px 18px rgba(110,50,200,.45);
+  }
+  .ask-btn:hover{opacity:.9;box-shadow:0 6px 24px rgba(120,60,210,.55)}
+  .ask-btn:active{transform:scale(.96)}
+  .ask-btn:disabled{opacity:.4;cursor:default}
+
+  /* bubble */
+  .bubble-wrap{min-height:68px;width:100%;display:flex;align-items:center;justify-content:center}
+  .bubble{
+    border-radius:20px;border-width:1px;border-style:solid;
+    padding:13px 22px;font-size:14.5px;font-weight:600;text-align:center;
+    line-height:1.5;width:100%;position:relative;
+    animation:bubbleIn .38s cubic-bezier(.34,1.56,.64,1);
+  }
+  .bubble::before{
+    content:'';position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+    border:9px solid transparent;border-bottom-width:0;border-top-width:11px;
+  }
+  @keyframes bubbleIn{0%{opacity:0;transform:scale(.84) translateY(8px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+  .bubble.yes{background:var(--yes-bg);border-color:var(--yes-border);color:var(--yes-text)}
+  .bubble.no{background:var(--no-bg);border-color:var(--no-border);color:var(--no-text)}
+  .bubble.maybe{background:var(--maybe-bg);border-color:var(--maybe-border);color:var(--maybe-text)}
+  .bubble.yes::before{border-top-color:var(--yes-border)}
+  .bubble.no::before{border-top-color:var(--no-border)}
+  .bubble.maybe::before{border-top-color:var(--maybe-border)}
+
+  .hint{font-size:12px;color:#4a3660;text-align:center;letter-spacing:.01em}
+
+  @keyframes tailWag{
+    0%,100%{transform:rotate(0deg)}
+    25%{transform:rotate(18deg)}75%{transform:rotate(-14deg)}
+  }
+  .wagging #luna-tail{animation:tailWag .25s ease-in-out 3;transform-origin:88px 158px}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="float-paw" style="left:7%;bottom:6%;--fd:5s;--fdelay:0s;--rot:-15deg">🐾</div>
+<div class="float-paw" style="left:19%;bottom:11%;--fd:6s;--fdelay:1.6s;--rot:10deg">🐾</div>
+<div class="float-paw" style="left:76%;bottom:7%;--fd:4.5s;--fdelay:.9s;--rot:-8deg">🐾</div>
+<div class="float-paw" style="left:87%;bottom:16%;--fd:7s;--fdelay:2.3s;--rot:20deg">🐾</div>
+<div class="float-paw" style="left:50%;bottom:3%;--fd:5.5s;--fdelay:3.1s;--rot:-5deg">🐾</div>
+
+<div class="card">
+  <div class="oracle-title">✦ Luna ✦</div>
+  <p class="oracle-sub">the mystical cat who knows everything unseen</p>
+
+  <!-- ══ LUNA SVG ══ -->
+  <div class="cat-stage" id="catStage" onclick="askCat()" title="Ask Luna">
+    <svg id="lunaSvg" viewBox="0 0 180 192" width="200" height="213" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="gBody" cx="40%" cy="33%" r="66%">
+          <stop offset="0%"  stop-color="#2a1e42"/>
+          <stop offset="55%" stop-color="#18102e"/>
+          <stop offset="100%" stop-color="#0c0818"/>
+        </radialGradient>
+        <radialGradient id="gEarIn" cx="50%" cy="44%" r="55%">
+          <stop offset="0%"  stop-color="#9850a0"/>
+          <stop offset="100%" stop-color="#60206a"/>
+        </radialGradient>
+        <radialGradient id="gBelly" cx="50%" cy="38%" r="60%">
+          <stop offset="0%"  stop-color="#221638"/>
+          <stop offset="100%" stop-color="#150e24"/>
+        </radialGradient>
+        <!-- anime iris: vivid violet-indigo -->
+        <radialGradient id="gIris" cx="36%" cy="26%" r="72%">
+          <stop offset="0%"  stop-color="#b8a8ff"/>
+          <stop offset="30%" stop-color="#8060e8"/>
+          <stop offset="68%" stop-color="#4820b8"/>
+          <stop offset="100%" stop-color="#240888"/>
+        </radialGradient>
+        <radialGradient id="gPupil" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="#080212"/>
+          <stop offset="100%" stop-color="#020108"/>
+        </radialGradient>
+        <radialGradient id="gMoon" cx="40%" cy="32%" r="64%">
+          <stop offset="0%"  stop-color="#fffac8"/>
+          <stop offset="50%" stop-color="#fad838"/>
+          <stop offset="100%" stop-color="#d8a010"/>
+        </radialGradient>
+        <radialGradient id="gNose" cx="50%" cy="38%" r="55%">
+          <stop offset="0%"  stop-color="#e090cc"/>
+          <stop offset="100%" stop-color="#b050a0"/>
+        </radialGradient>
+        <filter id="moonGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- ground shadow -->
+      <ellipse cx="90" cy="188" rx="44" ry="4.5" fill="#080410" opacity="0.6"/>
+
+      <!-- TAIL -->
+      <path id="luna-tail" d="M90,157 Q63,169 52,158 Q39,144 54,136 Q67,129 76,142"
+            fill="none" stroke="#160e28" stroke-width="11" stroke-linecap="round"/>
+      <path d="M89,155 Q65,166 56,157 Q49,148 59,140"
+            fill="none" stroke="#241a3c" stroke-width="4" stroke-linecap="round" opacity="0.55"/>
+
+      <!-- LEFT EAR -->
+      <polygon points="22,70 48,17 74,70" fill="url(#gBody)" stroke="#1e1432" stroke-width="1"/>
+      <polygon points="35,66 48,30 66,66" fill="url(#gEarIn)" opacity="0.88"/>
+      <line x1="48" y1="17" x2="43" y2="8"  stroke="#1e1432" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="48" y1="17" x2="53" y2="7"  stroke="#1e1432" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- RIGHT EAR -->
+      <polygon points="106,70 132,17 158,70" fill="url(#gBody)" stroke="#1e1432" stroke-width="1"/>
+      <polygon points="114,66 132,30 145,66" fill="url(#gEarIn)" opacity="0.88"/>
+      <line x1="132" y1="17" x2="127" y2="7"  stroke="#1e1432" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="132" y1="17" x2="137" y2="6"  stroke="#1e1432" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- BODY -->
+      <circle cx="90" cy="102" r="74" fill="url(#gBody)" stroke="#1e1432" stroke-width="1"/>
+      <!-- subtle sheen -->
+      <ellipse cx="72" cy="57" rx="28" ry="17" fill="#2e2248" opacity="0.2"/>
+      <!-- BELLY -->
+      <ellipse cx="90" cy="118" rx="33" ry="40" fill="url(#gBelly)" opacity="0.6"/>
+
+      <!-- BLUSH — barely there, plum haze -->
+      <ellipse cx="48" cy="114" rx="14" ry="8" fill="#a03890" opacity="0.14"/>
+      <ellipse cx="132" cy="114" rx="14" ry="8" fill="#a03890" opacity="0.14"/>
+
+      <!-- ══ ANIME EYES — synced blink ══ -->
+
+      <!-- LEFT EYE -->
+      <g class="eye-l">
+        <!-- sclera — soft lavender white -->
+        <ellipse cx="68" cy="92" rx="16.5" ry="19" fill="#ece8ff" opacity="0.96"/>
+        <!-- iris -->
+        <ellipse cx="68" cy="93" rx="12.5" ry="16" fill="url(#gIris)"/>
+        <!-- pupil -->
+        <ellipse cx="68" cy="94" rx="6.5" ry="10" fill="url(#gPupil)"/>
+        <!-- primary shine — large teardrop -->
+        <ellipse cx="62" cy="85" rx="5" ry="6" fill="white" opacity="0.95"/>
+        <!-- secondary sparkle -->
+        <circle  cx="74" cy="83" r="2.2" fill="white" opacity="0.75"/>
+        <!-- micro stars -->
+        <circle  cx="62" cy="100" r="1.5" fill="white" opacity="0.45"/>
+        <circle  cx="75" cy="98"  r="1"   fill="#d0c0ff" opacity="0.6"/>
+        <!-- iris shimmer arc bottom -->
+        <ellipse cx="68" cy="105" rx="8" ry="2.8" fill="#a898f8" opacity="0.22"/>
+        <!-- thick top lash bar -->
+        <ellipse cx="68" cy="77"  rx="16.5" ry="5.5" fill="#0a0616" opacity="0.96"/>
+        <!-- individual lashes -->
+        <line x1="52"  y1="80" x2="47"  y2="73" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="58"  y1="77" x2="54"  y2="70" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="64"  y1="75" x2="62"  y2="68" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="70"  y1="75" x2="70"  y2="68" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="76"  y1="76" x2="79"  y2="70" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="82"  y1="79" x2="87"  y2="74" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <!-- bottom lash line -->
+        <ellipse cx="68" cy="109" rx="13" ry="2.2" fill="#1e1438" opacity="0.5"/>
+      </g>
+
+      <!-- RIGHT EYE -->
+      <g class="eye-r">
+        <!-- sclera -->
+        <ellipse cx="112" cy="92" rx="16.5" ry="19" fill="#ece8ff" opacity="0.96"/>
+        <!-- iris -->
+        <ellipse cx="112" cy="93" rx="12.5" ry="16" fill="url(#gIris)"/>
+        <!-- pupil -->
+        <ellipse cx="112" cy="94" rx="6.5" ry="10" fill="url(#gPupil)"/>
+        <!-- primary shine -->
+        <ellipse cx="106" cy="85" rx="5" ry="6" fill="white" opacity="0.95"/>
+        <!-- secondary sparkle -->
+        <circle  cx="118" cy="83" r="2.2" fill="white" opacity="0.75"/>
+        <!-- micro stars -->
+        <circle  cx="106" cy="100" r="1.5" fill="white" opacity="0.45"/>
+        <circle  cx="119" cy="98"  r="1"   fill="#d0c0ff" opacity="0.6"/>
+        <!-- iris shimmer -->
+        <ellipse cx="112" cy="105" rx="8" ry="2.8" fill="#a898f8" opacity="0.22"/>
+        <!-- thick top lash bar -->
+        <ellipse cx="112" cy="77"  rx="16.5" ry="5.5" fill="#0a0616" opacity="0.96"/>
+        <!-- individual lashes -->
+        <line x1="96"  y1="80" x2="91"  y2="73" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="102" y1="77" x2="98"  y2="70" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="108" y1="75" x2="106" y2="68" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="114" y1="75" x2="114" y2="68" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="120" y1="76" x2="123" y2="70" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <line x1="126" y1="79" x2="131" y2="74" stroke="#0a0616" stroke-width="2" stroke-linecap="round"/>
+        <!-- bottom lash line -->
+        <ellipse cx="112" cy="109" rx="13" ry="2.2" fill="#1e1438" opacity="0.5"/>
+      </g>
+
+      <!-- NOSE -->
+      <polygon points="90,115 84,121 96,121" fill="url(#gNose)"/>
+      <!-- MOUTH -->
+      <path d="M84,121 Q90,128 96,121" fill="none" stroke="#b040a0" stroke-width="1.6" stroke-linecap="round"/>
+
+      <!-- WHISKERS LEFT -->
+      <line x1="18" y1="112" x2="76" y2="116" stroke="#2e2050" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+      <line x1="18" y1="120" x2="76" y2="120" stroke="#2e2050" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+      <line x1="22" y1="128" x2="76" y2="124" stroke="#2e2050" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+
+      <!-- WHISKERS RIGHT -->
+      <line x1="162" y1="112" x2="104" y2="116" stroke="#2e2050" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+      <line x1="162" y1="120" x2="104" y2="120" stroke="#2e2050" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+      <line x1="158" y1="128" x2="104" y2="124" stroke="#2e2050" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+
+      <!-- ══ CRESCENT MOON — Sailor Moon Luna style ══ -->
+      <g filter="url(#moonGlow)">
+        <!-- moon body -->
+        <circle cx="90" cy="67" r="9.5" fill="url(#gMoon)"/>
+        <!-- cutout to make crescent -->
+        <circle cx="94.5" cy="64" r="7.5" fill="#18102e"/>
+        <!-- inner crescent glow -->
+        <circle cx="90" cy="67" r="9.5" fill="none" stroke="#fae060" stroke-width=".8" opacity="0.5"/>
+        <!-- primary shine on crescent -->
+        <ellipse cx="86" cy="64" rx="2.8" ry="3.5" fill="#fffae0" opacity="0.75"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Input -->
+  <div class="q-row">
+    <input class="q-input" type="text" id="question" placeholder="will everything work out okay?" autocomplete="off"/>
+    <button class="ask-btn" id="askBtn" onclick="askCat()">ask Luna ✨</button>
+  </div>
+
+  <!-- Answer bubble -->
+  <div class="bubble-wrap" id="bubbleWrap"></div>
+
+  <p class="hint">tap Luna or press ask Luna &nbsp;·&nbsp; collect all 45 answers</p>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('stars');
+  for(let i=0;i<140;i++){
+    const s=document.createElement('div');s.className='star';
+    const sz=Math.random()*2.2+.4;
+    s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;`;
+    c.appendChild(s);
+  }
+})();
+
+const ANSWERS=[
+  {t:"Purrfectly yes. Obviously. ✨",v:"yes"},
+  {t:"The whiskers never lie — yes!",v:"yes"},
+  {t:"Yes, and I want full credit for this.",v:"yes"},
+  {t:"Yes! Now go get me a snack. 🐟",v:"yes"},
+  {t:"Meow-nifestly so.",v:"yes"},
+  {t:"The ancient cats have Googled it. Yes.",v:"yes"},
+  {t:"Yes. Luna has napped on it.",v:"yes"},
+  {t:"Signs point to yes, but lower your expectations anyway.",v:"yes"},
+  {t:"Absolutely. You're welcome. Now leave me alone.",v:"yes"},
+  {t:"A thousand moons say YES! 🌙",v:"yes"},
+  {t:"Yes, but only after you pet me.",v:"yes"},
+  {t:"Stars aligned. Moon approved. Luna confirmed: yes.",v:"yes"},
+  {t:"Yes. Luna is rarely wrong and never sorry.",v:"yes"},
+  {t:"Yep. And honestly, good for you. 🌸",v:"yes"},
+  {t:"YES. Don't make me repeat myself.",v:"yes"},
+  {t:"Lol, no. 🙀",v:"no"},
+  {t:"I hissed at this question. That's a no.",v:"no"},
+  {t:"Luna knocked that idea off the table.",v:"no"},
+  {t:"My tail is puffy. Absolutely not.",v:"no"},
+  {t:"No. And please stop asking.",v:"no"},
+  {t:"Hard no. Luna has standards.",v:"no"},
+  {t:"Not in this lifetime, bestie.",v:"no"},
+  {t:"I knocked your dreams off the counter. No.",v:"no"},
+  {t:"Oh honey. No. 💅",v:"no"},
+  {t:"Luna stared at this for 9 minutes. Still no.",v:"no"},
+  {t:"I would rather knock over a full glass. No.",v:"no"},
+  {t:"No. The ears are flat. This is final.",v:"no"},
+  {t:"Negative. Luna is not accepting appeals.",v:"no"},
+  {t:"The vibes are terrible. Do not proceed.",v:"no"},
+  {t:"No. Luna went back to sleep after this.",v:"no"},
+  {t:"The yarn is tangled. Ask again. 🧶",v:"maybe"},
+  {t:"Luna is 50% asleep, 50% uncertain.",v:"maybe"},
+  {t:"Unclear. I was distracted by a bug on the wall.",v:"maybe"},
+  {t:"The crystal ball is behind the couch. One moment.",v:"maybe"},
+  {t:"Maybe? Luna refuses to be held to this.",v:"maybe"},
+  {t:"Ask again. I blinked at the wrong moment.",v:"maybe"},
+  {t:"Luna is choosing chaos today. 🔮",v:"maybe"},
+  {t:"Concentrate harder. Also bring tuna.",v:"maybe"},
+  {t:"My third eye is blinking.",v:"maybe"},
+  {t:"Possible. But Luna needs a nap first.",v:"maybe"},
+  {t:"The signs are confusing. Much like you.",v:"maybe"},
+  {t:"Luna shrugs magnificently. 🐾",v:"maybe"},
+  {t:"Even my nine lives can't agree on this one.",v:"maybe"},
+  {t:"The future is fuzzy. Like me. 🌫️",v:"maybe"},
+  {t:"I sat on the answer and now I can't find it.",v:"maybe"},
+];
+
+let used=[],busy=false;
+
+function pickFresh(){
+  if(used.length===ANSWERS.length)used=[];
+  const pool=ANSWERS.filter((_,i)=>!used.includes(i));
+  const pick=pool[Math.floor(Math.random()*pool.length)];
+  used.push(ANSWERS.indexOf(pick));
+  return pick;
+}
+
+const SPARKS=['✦','✧','⋆','✩','☽','·','*','°'];
+function spawnSparkles(stage){
+  const w=stage.offsetWidth,h=stage.offsetHeight;
+  const cx=w/2,cy=h/2;
+  for(let i=0;i<10;i++){
+    const sp=document.createElement('span');sp.className='sparkle';
+    const angle=(Math.PI*2/10)*i+Math.random()*.5;
+    const dist=58+Math.random()*40;
+    sp.textContent=SPARKS[Math.floor(Math.random()*SPARKS.length)];
+    sp.style.cssText=`left:${cx}px;top:${cy}px;color:${['#fad838','#c0a8ff','#e0b0ff','#fff8c0','#a8c0ff'][i%5]};font-size:${10+Math.random()*12}px;--sx:${Math.cos(angle)*dist}px;--sy:${Math.sin(angle)*dist}px;`;
+    stage.appendChild(sp);
+    setTimeout(()=>sp.remove(),960);
+  }
+}
+
+function askCat(){
+  if(busy)return;
+  const stage=document.getElementById('catStage');
+  const btn=document.getElementById('askBtn');
+  const wrap=document.getElementById('bubbleWrap');
+  busy=true;btn.disabled=true;wrap.innerHTML='';
+  stage.classList.add('bouncing','wagging');
+  setTimeout(()=>{
+    stage.classList.remove('bouncing','wagging');
+    spawnSparkles(stage);
+    const ans=pickFresh();
+    const b=document.createElement('div');
+    b.className=`bubble ${ans.v}`;b.textContent=ans.t;
+    wrap.appendChild(b);
+    busy=false;btn.disabled=false;
+  },760);
+}
+
+document.getElementById('question').addEventListener('keydown',e=>{
+  if(e.key==='Enter')askCat();
+});
+</script>
+</body>
+</html>
