@@ -15,6 +15,16 @@
     --white:#fffdf9;
     --shadow:0 8px 24px rgba(122,98,84,.12);
     --soft:0 4px 12px rgba(122,98,84,.08);
+
+    --yes-bg:#eef6ee;
+    --yes-bd:#b7d1b7;
+    --yes-tx:#4e6650;
+    --no-bg:#f9efef;
+    --no-bd:#d9b9b9;
+    --no-tx:#6e4c4c;
+    --maybe-bg:#f3eff8;
+    --maybe-bd:#c9bdd9;
+    --maybe-tx:#5f536f;
   }
 
   *{ box-sizing:border-box; }
@@ -45,7 +55,6 @@
     line-height:1.1;
     color:var(--brown-dark);
     margin:0;
-    letter-spacing:.2px;
     text-align:center;
   }
 
@@ -100,7 +109,6 @@
   .ask-btn:active{ transform:translateY(1px) scale(.985); }
 
   .cat-zone{
-    position:relative;
     width:220px;
     height:220px;
     display:grid;
@@ -115,37 +123,19 @@
     display:grid;
     place-items:center;
     animation:floaty 3.1s ease-in-out infinite;
+    touch-action:manipulation;
   }
 
   #catSvg{ width:100%; height:100%; overflow:visible; }
 
-  .eye-group{
-    animation:blink 4.8s infinite;
-    transform-origin:center;
-  }
-
   .thinking #tail{
     animation:tailWiggle .45s ease-in-out infinite;
-    transform-origin:123px 138px;
+    transform-origin:132px 132px;
   }
 
   .responding .blush{
     animation:blushPulse .65s ease-in-out 4;
   }
-
-  .sparkle{
-    position:absolute;
-    font-size:18px;
-    color:var(--lav);
-    opacity:.75;
-    user-select:none;
-    pointer-events:none;
-    animation:twinkle 2.8s ease-in-out infinite;
-  }
-  .sparkle.s1{ top:18px; left:24px; animation-delay:0s; }
-  .sparkle.s2{ top:32px; right:20px; animation-delay:.7s; }
-  .sparkle.s3{ right:10px; bottom:34px; animation-delay:1.2s; }
-  .sparkle.s4{ left:8px; bottom:40px; animation-delay:1.8s; }
 
   .answer-shell{
     width:100%;
@@ -164,10 +154,12 @@
   .answer-bubble{
     width:100%;
     text-align:center;
-    color:#664f43;
     line-height:1.5;
     font-size:16px;
     font-family:'Poppins',sans-serif;
+    border-radius:16px;
+    border:1px solid transparent;
+    padding:8px 10px;
   }
 
   .typing{
@@ -186,19 +178,9 @@
     background:#bfaea0;
     animation:dots 1s infinite;
   }
+
   .dot:nth-child(2){ animation-delay:.2s; }
   .dot:nth-child(3){ animation-delay:.4s; }
-
-  .count-badge{
-    font-family:'Quicksand',sans-serif;
-    font-weight:700;
-    font-size:12px;
-    color:#8f7a6f;
-    background:#f8f2eb;
-    border:1.5px solid #e2d6cb;
-    border-radius:999px;
-    padding:5px 12px;
-  }
 
   .hint-text{
     color:#9c877b;
@@ -212,11 +194,6 @@
     50%{ transform:translateY(-5px); }
   }
 
-  @keyframes blink{
-    0%,90%,100%{ transform:scaleY(1); }
-    94%{ transform:scaleY(.08); }
-  }
-
   @keyframes tailWiggle{
     0%,100%{ transform:rotate(0deg); }
     25%{ transform:rotate(-8deg); }
@@ -227,11 +204,6 @@
   @keyframes blushPulse{
     0%,100%{ transform:scale(1); opacity:.85; }
     50%{ transform:scale(1.1); opacity:1; }
-  }
-
-  @keyframes twinkle{
-    0%,100%{ transform:translateY(0) scale(1); opacity:.35; }
-    50%{ transform:translateY(-6px) scale(1.08); opacity:.9; }
   }
 
   @keyframes dots{
@@ -254,7 +226,7 @@
 
 <div class="cat-wrap">
   <h2 class="cat-title">Mochi the Siamese</h2>
-  <p class="cat-subtitle">playful, a little wise, and mildly dramatic</p>
+  <p class="cat-subtitle">playful, wise-ish, and a little mysterious</p>
 
   <div class="q-row">
     <input id="catq" type="text" placeholder="Ask Mochi anything..." />
@@ -262,65 +234,45 @@
   </div>
 
   <div class="cat-zone">
-    <span class="sparkle s1">✦</span>
-    <span class="sparkle s2">♪</span>
-    <span class="sparkle s3">✧</span>
-    <span class="sparkle s4">♫</span>
-
     <div class="cat-container" id="catWrap" role="button" tabindex="0" aria-label="Ask Mochi">
       <svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" id="catSvg">
-        <!-- tail -->
-        <path id="tail" d="M127 116 C151 110, 153 143, 131 154 C121 159, 118 150, 126 144 C134 138, 136 127, 127 116Z"
-          fill="#7A6254" stroke="#5A4A40" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M131 126 C141 126, 144 133, 138 137 C133 140, 128 137, 131 126Z" fill="#C8B6A6" opacity=".35"/>
+        <path id="tail" d="M129 113 C149 103, 158 129, 149 147 C143 160, 130 159, 128 148 C126 140, 136 135, 138 128 C140 122, 137 117, 129 113Z"
+          fill="#3b2d2d" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
-        <!-- body -->
-        <path d="M54 106 C44 121, 39 139, 46 154 C54 171, 72 171, 89 170 C108 170, 124 170, 132 159 C138 150, 138 129, 126 112
-                 C120 103, 106 99, 90 99 C74 99, 61 100, 54 106Z"
-          fill="#F5EFE6" stroke="#5A4A40" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M50 42 C57 23, 74 18, 88 31 C101 18, 123 20, 132 40 C141 59, 140 95, 131 110 C122 125, 102 128, 88 128
+                 C73 128, 53 124, 45 109 C37 93, 38 60, 50 42Z"
+          fill="#f3eee2" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
-        <!-- head -->
-        <path d="M42 49 C42 35, 50 25, 61 32 L73 40 C84 36, 96 36, 107 40 L118 31 C129 23, 138 33, 138 47
-                 L137 91 C137 102, 126 109, 90 109 C54 109, 43 102, 43 91 Z"
-          fill="#F5EFE6" stroke="#5A4A40" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M50 42 C58 32, 70 33, 74 45 C66 49, 56 50, 50 42Z" fill="#4c3d37"/>
+        <path d="M126 42 C120 33, 108 33, 103 45 C112 49, 121 50, 126 42Z" fill="#4c3d37"/>
 
-        <!-- ears -->
-        <path d="M44 34 C50 21, 63 24, 69 40 C58 46, 48 45, 44 34Z" fill="#7A6254"/>
-        <path d="M111 40 C117 23, 131 22, 136 35 C132 45, 121 46, 111 40Z" fill="#7A6254"/>
+        <ellipse cx="88" cy="70" rx="44" ry="30" fill="#8a7266"/>
 
-        <!-- face mask -->
-        <ellipse cx="90" cy="76" rx="41" ry="30" fill="#7A6254"/>
+        <!-- kawaii eyes (no blinking, no blue) -->
+        <ellipse cx="66" cy="70" rx="14" ry="12" fill="#0f0f0f"/>
+        <ellipse cx="110" cy="70" rx="14" ry="12" fill="#0f0f0f"/>
+        <circle cx="61" cy="66" r="4.2" fill="#fff"/>
+        <circle cx="106" cy="66" r="4.2" fill="#fff"/>
+        <circle cx="69" cy="73" r="2.2" fill="#fff"/>
+        <circle cx="114" cy="73" r="2.2" fill="#fff"/>
 
-        <!-- eyes blue + blink -->
-        <g class="eye-group">
-          <ellipse cx="73" cy="77" rx="8.2" ry="7.2" fill="#7BC2E8"/>
-          <ellipse cx="107" cy="77" rx="8.2" ry="7.2" fill="#7BC2E8"/>
-          <ellipse cx="73" cy="78" rx="3.1" ry="3.3" fill="#39566B"/>
-          <ellipse cx="107" cy="78" rx="3.1" ry="3.3" fill="#39566B"/>
-          <circle cx="71" cy="75.5" r="1.3" fill="#fff"/>
-          <circle cx="105" cy="75.5" r="1.3" fill="#fff"/>
-        </g>
+        <ellipse cx="56" cy="86" rx="7.5" ry="3.5" fill="#e59aa6"/>
+        <ellipse cx="120" cy="86" rx="7.5" ry="3.5" fill="#e59aa6"/>
 
-        <!-- mouth -->
-        <path d="M86 87 Q90 92 94 87" stroke="#2F2622" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-        <path d="M82 84 Q84 88 88 86" stroke="#2F2622" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-        <path d="M98 84 Q96 88 92 86" stroke="#2F2622" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        <path d="M83 82 Q88 86 93 82" stroke="#171313" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        <path d="M78 80 Q82 82 84 79" stroke="#171313" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        <path d="M98 80 Q94 82 92 79" stroke="#171313" stroke-width="3.2" fill="none" stroke-linecap="round"/>
 
-        <!-- blush -->
-        <g class="blush-group">
-          <ellipse class="blush" cx="58" cy="88" rx="10" ry="8" fill="#EFA7B4" opacity=".85"/>
-          <ellipse class="blush" cx="122" cy="88" rx="10" ry="8" fill="#EFA7B4" opacity=".85"/>
-          <line x1="54" y1="84" x2="50" y2="90" stroke="#D48A9B" stroke-width="2" stroke-linecap="round"/>
-          <line x1="59" y1="84" x2="55" y2="91" stroke="#D48A9B" stroke-width="2" stroke-linecap="round"/>
-          <line x1="64" y1="84" x2="60" y2="91" stroke="#D48A9B" stroke-width="2" stroke-linecap="round"/>
-          <line x1="118" y1="84" x2="114" y2="90" stroke="#D48A9B" stroke-width="2" stroke-linecap="round"/>
-          <line x1="123" y1="84" x2="119" y2="91" stroke="#D48A9B" stroke-width="2" stroke-linecap="round"/>
-          <line x1="128" y1="84" x2="124" y2="91" stroke="#D48A9B" stroke-width="2" stroke-linecap="round"/>
-        </g>
+        <path d="M52 111 C45 120, 42 136, 49 148 C58 162, 76 162, 92 161 C109 161, 121 160, 128 152 C135 145, 136 131, 131 119
+                 C126 108, 115 102, 101 101 C84 99, 62 100, 52 111Z"
+          fill="#f3eee2" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
-        <!-- paw + patch -->
-        <ellipse cx="76" cy="167" rx="9" ry="8" fill="#7A6254"/>
-        <path d="M117 120 C110 123, 104 129, 101 136" stroke="#5A4A40" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M67 155 C70 145, 78 145, 82 154 C78 160, 71 160, 67 155Z" fill="#7a6254"/>
+
+        <path d="M104 134 C102 142, 100 148, 96 152" stroke="#111" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+        <ellipse class="blush" cx="56" cy="86" rx="7.5" ry="3.5" fill="#e59aa6" opacity=".55"/>
+        <ellipse class="blush" cx="120" cy="86" rx="7.5" ry="3.5" fill="#e59aa6" opacity=".55"/>
       </svg>
     </div>
   </div>
@@ -329,25 +281,58 @@
     <div class="answer-bubble" id="catAnswer">Mochi is listening...</div>
   </div>
 
-  <div id="countWrap" style="display:none;"><span class="count-badge" id="countBadge"></span></div>
   <p class="hint-text">Tap Mochi or press Enter</p>
 </div>
 
 <script>
   const all = [
-    ["Very yes. Move quietly and win loudly.", "yes"],
-    ["Yes, but keep one eyebrow raised.", "yes"],
-    ["Mochi approves. Proceed with tasteful confidence.", "yes"],
-    ["No. That idea smells like extra chaos.", "no"],
-    ["Not today. Protect your peace and snacks.", "no"],
-    ["Mochi says no, and Mochi is rarely wrong.", "no"],
-    ["Maybe. The moon is undecided.", "maybe"],
-    ["Possible... ask again after tea.", "maybe"],
-    ["Hmm. The path exists, but it wiggles.", "maybe"],
-    ["Yes. Destiny just sent a soft nudge.", "yes"],
-    ["Nope. Cute thought, risky execution.", "no"],
-    ["Maybe. Keep it mysterious and test small.", "maybe"]
+    ["the council of cats met... we're still confused, but it's a yes", "yes"],
+    ["i paused mid-lick for this... no", "no"],
+    ["the zoomies have spoken... chaotic yes", "yes"],
+    ["i saw this in a dream between naps... don't do it", "no"],
+    ["even the red laser dot hesitated... that's a no", "no"],
+    ["i consulted the forbidden cardboard box... yes, but barely", "maybe"],
+    ["my last brain cell says yes, my dignity says no", "maybe"],
+    ["i knocked over three things thinking about this... still no", "no"],
+    ["the ancient scratching post has no record of this ending well", "no"],
+    ["i just stared at nothing for 12 minutes... the answer is yes", "yes"],
+    ["my whiskers formed a triangle... that's a sign, but unclear", "maybe"],
+    ["i tried to ignore this question... it followed me, so yes", "yes"],
+    ["the ghosts in the hallway voted no", "no"],
+    ["i would chase this like a moth... which is concerning, but yes", "yes"],
+    ["the vibes are off, and i am rarely wrong", "no"],
+    ["i screamed internally and externally... no", "no"],
+    ["i licked my paw, thought deeply... still a bad idea", "no"],
+    ["the sunbeam moved and so should you... no", "no"],
+    ["i knocked this timeline into another dimension... yes, in that one", "yes"],
+    ["i heard a can open in the distance... that means yes", "yes"],
+    ["i have never been more dramatic about a no", "no"],
+    ["i stared directly into your soul for this... don't", "no"],
+    ["the answer arrived, then left... i think it was no", "maybe"],
+    ["i would do it, which is exactly why you shouldn't", "no"],
+    ["the vibes said yes, but they were giggling", "maybe"],
+    ["i just sprinted across the house... take that as a warning", "maybe"],
+    ["this feels like when i sprint into a wall... no", "no"],
+    ["i fell off something mid-thought... that's your sign", "maybe"],
+    ["the answer is yes, but i refuse to take responsibility", "yes"],
+    ["i am both impressed and concerned... no", "no"],
+    ["i knocked fate off the counter... it was fragile anyway", "maybe"],
+    ["the answer changed three times... currently no", "no"],
+    ["i would bet one (1) life on this... cautious yes", "yes"],
+    ["the universe blinked slowly at me... that's a yes", "yes"],
+    ["i tried to bury this answer... it came back, so no", "no"],
+    ["i'm purring, which is suspicious... yes", "yes"],
+    ["the silence was loud... do not proceed", "no"],
+    ["i looked away dramatically... that means no", "no"],
+    ["the prophecy is smudged, but it says \"eh\"", "maybe"],
+    ["i am zooming in circles... interpret that how you want", "maybe"]
   ];
+
+  const toneStyle = {
+    yes: { bg: "var(--yes-bg)", bd: "var(--yes-bd)", tx: "var(--yes-tx)" },
+    no: { bg: "var(--no-bg)", bd: "var(--no-bd)", tx: "var(--no-tx)" },
+    maybe: { bg: "var(--maybe-bg)", bd: "var(--maybe-bd)", tx: "var(--maybe-tx)" }
+  };
 
   let used = [];
   let busy = false;
@@ -356,20 +341,15 @@
     if (used.length === all.length) used = [];
     const pool = all.filter((_, i) => !used.includes(i));
     const pick = pool[Math.floor(Math.random() * pool.length)];
-    const idx = all.indexOf(pick);
-    used.push(idx);
+    used.push(all.indexOf(pick));
     return pick;
   }
 
   function typingDots(el) {
-    el.innerHTML = `
-      <span class="typing">
-        Mochi is thinking
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-      </span>`;
+    el.innerHTML = '<span class="typing">Mochi is thinking<span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
   }
 
-  function typeText(el, text, speed = 24) {
+  function typeText(el, text, speed) {
     el.textContent = "";
     let i = 0;
     const timer = setInterval(() => {
@@ -385,24 +365,27 @@
 
     const wrap = document.getElementById("catWrap");
     const ans = document.getElementById("catAnswer");
-    const cw = document.getElementById("countWrap");
-    const cb = document.getElementById("countBadge");
 
     wrap.classList.add("thinking");
     typingDots(ans);
 
     setTimeout(() => {
-      const [text] = pickFresh();
+      const [text, tone] = pickFresh();
+      const t = toneStyle[tone];
       wrap.classList.remove("thinking");
       wrap.classList.add("responding");
-      typeText(ans, text, 22);
-      cw.style.display = "block";
-      cb.textContent = `${used.length} of ${all.length} answers discovered`;
+
+      ans.style.background = t.bg;
+      ans.style.borderColor = t.bd;
+      ans.style.color = t.tx;
+
+      typeText(ans, text, 20);
+
       setTimeout(() => {
         wrap.classList.remove("responding");
         busy = false;
-      }, 900);
-    }, 920);
+      }, 950);
+    }, 900);
   }
 
   document.getElementById("askBtn").addEventListener("click", askCat);
