@@ -1,16 +1,19 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
 <style>
   * { box-sizing: border-box; }
   .cat-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; padding: 2rem 1rem 2.5rem; font-family: var(--font-sans); }
-  .cat-title { font-size: 20px; font-weight: 500; color: #b06fa0; letter-spacing: 0.04em; }
-  .cat-subtitle { font-size: 13px; color: #c9a0c0; margin-top: -0.8rem; }
+  .cat-title { font-size: 20px; font-weight: 500; color: #b06fa0; letter-spacing: 0.04em; text-align: center; }
+  .cat-subtitle { font-size: 13px; color: #c9a0c0; margin-top: -0.8rem; text-align: center; }
   .q-row { display: flex; gap: 8px; width: 100%; max-width: 420px; }
-  .q-row input { flex: 1; padding: 10px 14px; border-radius: 50px; border: 1.5px solid #e8c5e0; background: #fdf4fb; color: #7a4a72; font-size: 14px; outline: none; }
+  .q-row input { flex: 1; min-width: 0; padding: 10px 14px; border-radius: 50px; border: 1.5px solid #e8c5e0; background: #fdf4fb; color: #7a4a72; font-size: 14px; outline: none; }
   .q-row input::placeholder { color: #d4a8cc; }
   .q-row input:focus { border-color: #c47ab8; }
-  .ask-btn { padding: 10px 20px; border-radius: 50px; border: none; background: #e8a0d8; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
+  .ask-btn { padding: 10px 20px; border-radius: 50px; border: none; background: #e8a0d8; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; min-height: 42px; }
   .ask-btn:hover { background: #d885c8; }
   .ask-btn:active { transform: scale(0.96); }
-  .cat-container { cursor: pointer; position: relative; width: 180px; height: 180px; }
+  .cat-container { cursor: pointer; position: relative; width: 180px; height: 180px; touch-action: manipulation; }
+  #catSvg { width: 100%; height: 100%; }
   @keyframes bounce { 0%,100% { transform: translateY(0) rotate(0deg); } 20% { transform: translateY(-14px) rotate(-5deg); } 40% { transform: translateY(-8px) rotate(4deg); } 60% { transform: translateY(-16px) rotate(-3deg); } 80% { transform: translateY(-6px) rotate(2deg); } }
   @keyframes blink { 0%,90%,100% { transform: scaleY(1); } 95% { transform: scaleY(0.08); } }
   @keyframes appear { 0% { opacity: 0; transform: translateY(10px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
@@ -19,60 +22,82 @@
   .answer-bubble { border-radius: 20px; padding: 14px 22px; font-size: 15px; font-weight: 500; max-width: 340px; text-align: center; animation: appear 0.35s ease; position: relative; line-height: 1.5; }
   .answer-bubble::before { content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); border: 8px solid transparent; border-top: none; }
   .answer-bubble::after { content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); border: 7px solid transparent; border-top: none; }
-  .hint-text { font-size: 12px; color: #d4a8cc; }
+  .hint-text { font-size: 12px; color: #d4a8cc; text-align: center; }
   .paws-row { display: flex; gap: 6px; opacity: 0.3; }
   .count-badge { font-size: 12px; color: #c9a0c0; background: #fdf0fb; border: 1px solid #e8c5e0; border-radius: 50px; padding: 3px 12px; }
+
+  @media (max-width: 640px) {
+    .cat-wrap { padding: 1.25rem 0.9rem 1.8rem; gap: 1rem; }
+    .cat-title { font-size: 18px; }
+    .cat-subtitle { font-size: 12px; margin-top: -0.4rem; }
+    .q-row { max-width: 100%; gap: 10px; }
+    .q-row input { font-size: 16px; padding: 12px 14px; min-height: 44px; }
+    .ask-btn { font-size: 15px; padding: 12px 16px; min-height: 44px; }
+    .cat-container { width: 150px; height: 150px; }
+    #catAnswer { max-width: 100% !important; min-height: 72px !important; padding: 0 4px; }
+    .answer-bubble { max-width: 100%; font-size: 14px; padding: 12px 14px; border-radius: 16px; }
+    .hint-text, .count-badge { font-size: 11px; }
+  }
+
+  @media (max-width: 420px) {
+    .q-row { flex-direction: column; }
+    .ask-btn { width: 100%; }
+    .cat-container { width: 140px; height: 140px; }
+    .cat-title { letter-spacing: 0.02em; }
+  }
 </style>
 
 <div class="cat-wrap">
-  <h2 class="sr-only">Cat Oracle — tap the cat for a funny random answer</h2>
-  <div class="cat-title">✨ the cat oracle ✨</div>
+  <h2 class="sr-only">Mochi — tap Mochi for a funny random answer</h2>
+  <div class="cat-title">✨ mochi the siamese ✨</div>
   <p class="cat-subtitle">the all-knowing, occasionally napping authority</p>
 
   <div class="q-row">
     <input type="text" id="catq" placeholder="will today be a good day?" />
-    <button class="ask-btn" onclick="askCat()">ask kitty</button>
+    <button class="ask-btn" onclick="askCat()">ask mochi</button>
   </div>
 
   <div class="cat-container" onclick="askCat()" id="catWrap">
     <svg viewBox="0 0 180 180" width="180" height="180" xmlns="http://www.w3.org/2000/svg" id="catSvg">
       <defs>
-        <radialGradient id="bodyGrad" cx="45%" cy="38%" r="62%"><stop offset="0%" stop-color="#f9e4f5"/><stop offset="100%" stop-color="#f0c8e8"/></radialGradient>
-        <radialGradient id="innerEarGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f4b8dc"/><stop offset="100%" stop-color="#e890cc"/></radialGradient>
-        <radialGradient id="noseGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f4a0cc"/><stop offset="100%" stop-color="#e070b0"/></radialGradient>
-        <radialGradient id="eyeGrad" cx="35%" cy="30%" r="65%"><stop offset="0%" stop-color="#b882d4"/><stop offset="100%" stop-color="#7c42a8"/></radialGradient>
-        <radialGradient id="bellyGrad" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fef0fa"/><stop offset="100%" stop-color="#fce0f5"/></radialGradient>
+        <radialGradient id="bodyGrad" cx="45%" cy="38%" r="62%"><stop offset="0%" stop-color="#f6eee5"/><stop offset="100%" stop-color="#e8d9cb"/></radialGradient>
+        <radialGradient id="pointGrad" cx="50%" cy="45%" r="65%"><stop offset="0%" stop-color="#b69784"/><stop offset="100%" stop-color="#7d5f4f"/></radialGradient>
+        <radialGradient id="innerEarGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d5b6a2"/><stop offset="100%" stop-color="#b88f78"/></radialGradient>
+        <radialGradient id="noseGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c28a84"/><stop offset="100%" stop-color="#a26c67"/></radialGradient>
+        <radialGradient id="eyeGrad" cx="35%" cy="30%" r="65%"><stop offset="0%" stop-color="#9fd4ea"/><stop offset="100%" stop-color="#4f87b0"/></radialGradient>
+        <radialGradient id="bellyGrad" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#fff9f2"/><stop offset="100%" stop-color="#f3e8dd"/></radialGradient>
       </defs>
-      <ellipse cx="90" cy="174" rx="48" ry="6" fill="#e8b8e0" opacity="0.3"/>
-      <polygon points="28,62 52,20 72,62" fill="url(#bodyGrad)" stroke="#e8b8e0" stroke-width="1.5"/>
-      <polygon points="38,58 52,30 66,58" fill="url(#innerEarGrad)" opacity="0.85"/>
-      <polygon points="108,62 128,20 152,62" fill="url(#bodyGrad)" stroke="#e8b8e0" stroke-width="1.5"/>
-      <polygon points="114,58 128,30 142,58" fill="url(#innerEarGrad)" opacity="0.85"/>
-      <circle cx="90" cy="98" r="72" fill="url(#bodyGrad)" stroke="#e8b8e0" stroke-width="1.5"/>
-      <ellipse cx="90" cy="112" rx="34" ry="40" fill="url(#bellyGrad)" opacity="0.7"/>
-      <ellipse cx="68" cy="88" rx="14" ry="16" fill="white" opacity="0.9"/>
-      <ellipse cx="112" cy="88" rx="14" ry="16" fill="white" opacity="0.9"/>
+      <ellipse cx="90" cy="174" rx="48" ry="6" fill="#cdb8a9" opacity="0.35"/>
+      <polygon points="28,62 52,20 72,62" fill="url(#pointGrad)" stroke="#8d6f5d" stroke-width="1.5"/>
+      <polygon points="38,58 52,30 66,58" fill="url(#innerEarGrad)" opacity="0.9"/>
+      <polygon points="108,62 128,20 152,62" fill="url(#pointGrad)" stroke="#8d6f5d" stroke-width="1.5"/>
+      <polygon points="114,58 128,30 142,58" fill="url(#innerEarGrad)" opacity="0.9"/>
+      <circle cx="90" cy="98" r="72" fill="url(#bodyGrad)" stroke="#ccb6a7" stroke-width="1.5"/>
+      <ellipse cx="90" cy="92" rx="45" ry="34" fill="url(#pointGrad)" opacity="0.62"/>
+      <ellipse cx="90" cy="112" rx="34" ry="40" fill="url(#bellyGrad)" opacity="0.82"/>
+      <ellipse cx="68" cy="88" rx="14" ry="16" fill="white" opacity="0.92"/>
+      <ellipse cx="112" cy="88" rx="14" ry="16" fill="white" opacity="0.92"/>
       <g class="eye-group" style="transform-origin: 68px 88px;"><ellipse cx="68" cy="89" rx="9" ry="13" fill="url(#eyeGrad)"/><ellipse cx="65" cy="85" rx="3" ry="4" fill="white" opacity="0.6"/><ellipse cx="70" cy="92" rx="1.5" ry="2" fill="white" opacity="0.4"/></g>
       <g class="eye-group" style="transform-origin: 112px 88px;"><ellipse cx="112" cy="89" rx="9" ry="13" fill="url(#eyeGrad)"/><ellipse cx="109" cy="85" rx="3" ry="4" fill="white" opacity="0.6"/><ellipse cx="114" cy="92" rx="1.5" ry="2" fill="white" opacity="0.4"/></g>
       <polygon points="90,104 85,109 95,109" fill="url(#noseGrad)"/>
-      <path d="M85,109 Q90,115 95,109" fill="none" stroke="#e070b0" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="30" y1="105" x2="76" y2="108" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="30" y1="112" x2="76" y2="112" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="34" y1="119" x2="76" y2="116" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="150" y1="105" x2="104" y2="108" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="150" y1="112" x2="104" y2="112" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <line x1="146" y1="119" x2="104" y2="116" stroke="#d4a0cc" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-      <ellipse cx="52" cy="102" rx="11" ry="7" fill="#f4a0c8" opacity="0.35"/>
-      <ellipse cx="128" cy="102" rx="11" ry="7" fill="#f4a0c8" opacity="0.35"/>
-      <circle cx="90" cy="68" r="4" fill="#e8a0d8" opacity="0.5"/>
-      <circle cx="90" cy="68" r="2" fill="#d070c0" opacity="0.7"/>
+      <path d="M85,109 Q90,115 95,109" fill="none" stroke="#9a6b66" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="30" y1="105" x2="76" y2="108" stroke="#a98d7f" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+      <line x1="30" y1="112" x2="76" y2="112" stroke="#a98d7f" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+      <line x1="34" y1="119" x2="76" y2="116" stroke="#a98d7f" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+      <line x1="150" y1="105" x2="104" y2="108" stroke="#a98d7f" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+      <line x1="150" y1="112" x2="104" y2="112" stroke="#a98d7f" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+      <line x1="146" y1="119" x2="104" y2="116" stroke="#a98d7f" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+      <ellipse cx="52" cy="102" rx="11" ry="7" fill="#d5a79f" opacity="0.28"/>
+      <ellipse cx="128" cy="102" rx="11" ry="7" fill="#d5a79f" opacity="0.28"/>
+      <circle cx="90" cy="68" r="4" fill="#9f7f70" opacity="0.45"/>
+      <circle cx="90" cy="68" r="2" fill="#7f6254" opacity="0.65"/>
     </svg>
   </div>
 
   <div id="catAnswer" style="min-height:60px;display:flex;align-items:center;justify-content:center;width:100%;max-width:360px;"></div>
   <div id="countWrap" style="display:none;"><span class="count-badge" id="countBadge"></span></div>
   <div class="paws-row"><span style="font-size:14px;">🐾</span><span style="font-size:14px;">🐾</span><span style="font-size:14px;">🐾</span></div>
-  <p class="hint-text">tap the kitty or press ask kitty</p>
+  <p class="hint-text">tap mochi or press ask mochi</p>
 </div>
 
 <script>
@@ -81,7 +106,7 @@ const all = [
   ["Purrfectly yes. Obviously.", "yes"],
   ["The whiskers say yes. Trust the whiskers.", "yes"],
   ["Yes! Now go get me a snack.", "yes"],
-  ["Absolutely. The oracle has napped on it.", "yes"],
+  ["Absolutely. Mochi has napped on it.", "yes"],
   ["Signs point to yes, but lower your expectations anyway.", "yes"],
   ["Meow-nifestly so. ✨", "yes"],
   ["Yes, but only if you pet me first.", "yes"],
@@ -90,37 +115,37 @@ const all = [
   ["Yes, and honestly good for you.", "yes"],
   ["Yep. You're welcome. Now leave me alone.", "yes"],
   ["Stars aligned. Moon approved. Cat confirmed: yes.", "yes"],
-  ["Yes, and the oracle would like a treat now.", "yes"],
-  ["Without a doubt. The oracle is rarely wrong and never sorry.", "yes"],
+  ["Yes, and Mochi would like a treat now.", "yes"],
+  ["Without a doubt. Mochi is rarely wrong and never sorry.", "yes"],
 
   ["Lol, no. 🙀", "no"],
-  ["The oracle knocked that idea off the table.", "no"],
+  ["Mochi knocked that idea off the table.", "no"],
   ["I hissed at this question. That's a no.", "no"],
   ["My tail is puffy. Absolutely not.", "no"],
   ["No. And please stop asking.", "no"],
   ["The vibes are terrible. Do not proceed.", "no"],
-  ["Hard no. The oracle has standards.", "no"],
+  ["Hard no. Mochi has standards.", "no"],
   ["Not in this lifetime, bestie.", "no"],
   ["I knocked your dreams off the counter. No.", "no"],
-  ["No. The oracle went back to sleep after this.", "no"],
+  ["No. Mochi went back to sleep after this.", "no"],
   ["Oh honey. No.", "no"],
-  ["The oracle stared at this for 9 minutes and still says no.", "no"],
+  ["Mochi stared at this for 9 minutes and still says no.", "no"],
   ["I would rather knock over a full glass than say yes.", "no"],
   ["No. The ears are flat. This is final.", "no"],
-  ["Negative. The oracle is not accepting appeals.", "no"],
+  ["Negative. Mochi is not accepting appeals.", "no"],
 
   ["The yarn is tangled. Ask again.", "maybe"],
-  ["Hmm. The oracle is 50% asleep, 50% uncertain.", "maybe"],
+  ["Hmm. Mochi is 50% asleep, 50% uncertain.", "maybe"],
   ["Unclear. I was distracted by a bug on the wall.", "maybe"],
   ["The crystal ball is behind the couch. Give me a moment.", "maybe"],
-  ["Maybe? The oracle refuses to be held to this.", "maybe"],
+  ["Maybe? Mochi refuses to be held to this.", "maybe"],
   ["Ask again. I blinked at the wrong moment.", "maybe"],
-  ["The oracle is choosing chaos today.", "maybe"],
+  ["Mochi is choosing chaos today.", "maybe"],
   ["Concentrate harder. Also bring tuna.", "maybe"],
   ["My third eye is blinking. Try again.", "maybe"],
-  ["Possible. The oracle needs more information and also a nap.", "maybe"],
+  ["Possible. Mochi needs more information and also a nap.", "maybe"],
   ["The signs are... confusing. Much like you.", "maybe"],
-  ["The oracle shrugs magnificently.", "maybe"],
+  ["Mochi shrugs magnificently.", "maybe"],
   ["Even my nine lives can't agree on this one.", "maybe"],
   ["The future is fuzzy. Like me.", "maybe"],
   ["I sat on the answer and now I can't find it.", "maybe"],
@@ -156,16 +181,12 @@ function askCat() {
     wrap.classList.remove('bouncing');
     const [text, tone] = pickFresh();
     const c = colors[tone];
-    ans.innerHTML = <div class="answer-bubble" style="background:${c.bg};border:1.5px solid ${c.border};color:${c.text};">${text}</div>;
-    const el = ans.querySelector('.answer-bubble');
-    el.style.setProperty('--tip', c.tip);
-    el.style.cssText += --tip:${c.tip};;
-    ans.querySelector('.answer-bubble').insertAdjacentHTML('beforebegin','');
+    ans.innerHTML = `<div class="answer-bubble" style="background:${c.bg};border:1.5px solid ${c.border};color:${c.text};">${text}</div>`;
     const style = document.createElement('style');
-    style.textContent = .answer-bubble::before{border-bottom-color:${c.border}!important}.answer-bubble::after{border-bottom-color:${c.bg}!important};
+    style.textContent = `.answer-bubble::before{border-bottom-color:${c.border}!important}.answer-bubble::after{border-bottom-color:${c.bg}!important}`;
     document.head.appendChild(style);
     cw.style.display = 'block';
-    cb.textContent = ${used.length} of ${all.length} answers discovered 🐾;
+    cb.textContent = `${used.length} of ${all.length} answers discovered 🐾`;
     busy = false;
   }, 720);
 }
@@ -173,4 +194,4 @@ function askCat() {
 document.getElementById('catq').addEventListener('keydown', e => {
   if (e.key === 'Enter') askCat();
 });
-</script>"
+</script>
