@@ -1,411 +1,373 @@
-<!-- index.html (full replacement) -->
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Poppins:wght@500;700&family=Quicksand:wght@500;700&display=swap');
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mochi Oracle</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@500;700;800&family=Poppins:wght@600;700&display=swap');
 
-  :root{
-    --cream:#F5EFE6;
-    --beige:#EADFD3;
-    --taupe:#C8B6A6;
-    --blush:#EFA7B4;
-    --brown:#7A6254;
-    --brown-dark:#5A4A40;
-    --sage:#A9BFA9;
-    --lav:#B7A9C9;
-    --ink:#5A4A40;
-    --white:#fffdf9;
-    --shadow:0 8px 24px rgba(122,98,84,.12);
-    --soft:0 4px 12px rgba(122,98,84,.08);
+    :root{
+      --bg:#fff7fa;
+      --panel:#fffdfd;
+      --pink-1:#fbeaf1;
+      --pink-2:#f6dbe7;
+      --pink-3:#efc9da;
+      --pink-4:#e3b3c9;
+      --text:#8f7582;
+      --text-strong:#7d6573;
+      --line:#e9ceda;
+      --yes-bg:#f3fbf8;
+      --yes-line:#c9e8dc;
+      --yes-text:#6d8f85;
+      --no-bg:#fff4f7;
+      --no-line:#f2cad8;
+      --no-text:#9a7280;
+      --maybe-bg:#fbf6ff;
+      --maybe-line:#e2d5f2;
+      --maybe-text:#86749a;
+      --shadow:0 8px 24px rgba(211, 166, 186, .16);
+      --soft:0 4px 12px rgba(211, 166, 186, .12);
+    }
 
-    --yes-bg:#eef6ee;
-    --yes-bd:#b7d1b7;
-    --yes-tx:#4e6650;
-    --no-bg:#f9efef;
-    --no-bd:#d9b9b9;
-    --no-tx:#6e4c4c;
-    --maybe-bg:#f3eff8;
-    --maybe-bd:#c9bdd9;
-    --maybe-tx:#5f536f;
-  }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100dvh;
+      font-family:'Nunito',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% 8%, #fff, transparent 28%),
+        radial-gradient(circle at 82% 12%, #fff, transparent 24%),
+        linear-gradient(180deg,var(--bg),#fff2f7);
+      display:grid;
+      place-items:center;
+      padding:18px;
+    }
 
-  *{ box-sizing:border-box; }
+    .app{
+      width:min(760px,100%);
+      background:var(--panel);
+      border:1.5px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:24px 18px 20px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+    }
 
-  body{
-    margin:0;
-    background:linear-gradient(180deg,var(--cream),#f8f3eb 45%,var(--beige));
-    color:var(--ink);
-    font-family:'Nunito',sans-serif;
-  }
+    .title{
+      margin:0;
+      font:700 clamp(1.45rem,3.4vw,2rem)/1.1 'Poppins',sans-serif;
+      color:var(--text-strong);
+      text-align:center;
+      letter-spacing:.2px;
+    }
 
-  .cat-wrap{
-    max-width:680px;
-    margin:28px auto;
-    padding:28px 20px 24px;
-    border-radius:28px;
-    background:var(--white);
-    box-shadow:var(--shadow);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:16px;
-  }
+    .subtitle{
+      margin:0 0 4px;
+      font:600 0.98rem/1.35 'Quicksand',sans-serif;
+      text-align:center;
+      color:#a18593;
+    }
 
-  .cat-title{
-    font-family:'Poppins',sans-serif;
-    font-size:28px;
-    line-height:1.1;
-    color:var(--brown-dark);
-    margin:0;
-    text-align:center;
-  }
+    .q-row{
+      width:min(560px,100%);
+      display:flex;
+      gap:10px;
+    }
 
-  .cat-subtitle{
-    margin:-4px 0 8px;
-    color:#8c776a;
-    font-size:15px;
-    text-align:center;
-  }
+    .q-row input{
+      flex:1;
+      min-width:0;
+      border:1.5px solid var(--line);
+      border-radius:999px;
+      padding:12px 15px;
+      background:#fff;
+      color:var(--text-strong);
+      font:600 0.97rem 'Quicksand',sans-serif;
+      outline:none;
+      box-shadow:var(--soft);
+    }
 
-  .q-row{
-    width:100%;
-    max-width:520px;
-    display:flex;
-    gap:10px;
-  }
+    .q-row input::placeholder{ color:#c5a8b6; }
+    .q-row input:focus{
+      border-color:var(--pink-4);
+      box-shadow:0 0 0 4px rgba(227,179,201,.18);
+    }
 
-  .q-row input{
-    flex:1;
-    min-width:0;
-    border:1.5px solid #dbcdbf;
-    border-radius:999px;
-    padding:13px 16px;
-    background:#fffaf4;
-    color:var(--ink);
-    font-size:15px;
-    font-family:'Quicksand',sans-serif;
-    outline:none;
-    box-shadow:var(--soft);
-  }
+    .ask-btn{
+      border:none;
+      border-radius:999px;
+      min-height:44px;
+      padding:12px 17px;
+      font:700 .95rem 'Quicksand',sans-serif;
+      color:#8b6e7d;
+      background:linear-gradient(180deg,var(--pink-2),var(--pink-3));
+      box-shadow:var(--soft);
+      cursor:pointer;
+    }
 
-  .q-row input:focus{
-    border-color:var(--sage);
-    box-shadow:0 0 0 4px rgba(169,191,169,.15);
-  }
+    .ask-btn:active{ transform:translateY(1px) scale(.99); }
 
-  .ask-btn{
-    border:0;
-    border-radius:999px;
-    padding:12px 18px;
-    background:linear-gradient(180deg,#d8e8d7,var(--sage));
-    color:#3f5342;
-    font-family:'Quicksand',sans-serif;
-    font-weight:700;
-    cursor:pointer;
-    box-shadow:var(--soft);
-    transition:transform .12s ease,filter .2s ease;
-    min-height:44px;
-  }
+    .cat-wrap{
+      width:214px; height:214px;
+      display:grid; place-items:center;
+      border-radius:24px;
+      background:linear-gradient(180deg,#fff,#fff8fb);
+      border:1px solid var(--pink-1);
+      box-shadow:var(--soft);
+      cursor:pointer;
+      touch-action:manipulation;
+      animation:float 3.1s ease-in-out infinite;
+    }
 
-  .ask-btn:hover{ filter:brightness(.98); }
-  .ask-btn:active{ transform:translateY(1px) scale(.985); }
+    #catSvg{ width:194px; height:194px; overflow:visible; }
 
-  .cat-zone{
-    width:220px;
-    height:220px;
-    display:grid;
-    place-items:center;
-  }
+    .thinking #tail{ animation:tail .45s ease-in-out infinite; transform-origin:132px 132px; }
+    .responding .blush{ animation:blush .7s ease-in-out 3; }
 
-  .cat-container{
-    cursor:pointer;
-    width:200px;
-    height:200px;
-    border-radius:24px;
-    display:grid;
-    place-items:center;
-    animation:floaty 3.1s ease-in-out infinite;
-    touch-action:manipulation;
-  }
+    .answer-shell{
+      width:min(560px,100%);
+      min-height:78px;
+      border:1.5px solid var(--line);
+      border-radius:22px;
+      background:#fff;
+      box-shadow:var(--soft);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 15px;
+    }
 
-  #catSvg{ width:100%; height:100%; overflow:visible; }
+    .answer{
+      width:100%;
+      text-align:center;
+      font:700 1rem/1.5 'Poppins',sans-serif;
+      color:var(--text-strong);
+      border:1px solid transparent;
+      border-radius:15px;
+      padding:7px 9px;
+    }
 
-  .thinking #tail{
-    animation:tailWiggle .45s ease-in-out infinite;
-    transform-origin:132px 132px;
-  }
+    .typing{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font:700 .95rem 'Quicksand',sans-serif;
+      color:#b1919f;
+    }
 
-  .responding .blush{
-    animation:blushPulse .65s ease-in-out 4;
-  }
+    .dot{
+      width:7px; height:7px; border-radius:50%;
+      background:#d6b5c4;
+      animation:dots 1s infinite;
+    }
+    .dot:nth-child(2){ animation-delay:.2s; }
+    .dot:nth-child(3){ animation-delay:.4s; }
 
-  .answer-shell{
-    width:100%;
-    max-width:520px;
-    border:1.5px solid #e2d7ca;
-    border-radius:24px;
-    background:#fffaf6;
-    box-shadow:var(--soft);
-    padding:14px 16px;
-    min-height:76px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+    .hint{
+      margin:0;
+      font:700 .82rem 'Quicksand',sans-serif;
+      color:#b599a7;
+      text-align:center;
+    }
 
-  .answer-bubble{
-    width:100%;
-    text-align:center;
-    line-height:1.5;
-    font-size:16px;
-    font-family:'Poppins',sans-serif;
-    border-radius:16px;
-    border:1px solid transparent;
-    padding:8px 10px;
-  }
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    @keyframes tail{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg)}60%{transform:rotate(5deg)}}
+    @keyframes blush{0%,100%{opacity:.72;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+    @keyframes dots{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-4px);opacity:1}}
 
-  .typing{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    color:#907d71;
-    font-family:'Quicksand',sans-serif;
-    font-weight:700;
-  }
+    @media (max-width:640px){
+      .app{ padding:20px 13px 16px; border-radius:22px; }
+      .q-row{ flex-direction:column; }
+      .ask-btn{ width:100%; }
+      .cat-wrap{ width:186px; height:186px; }
+      #catSvg{ width:170px; height:170px; }
+      .answer{ font-size:.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <h1 class="title">Mochi the Oracle Kitty</h1>
+    <p class="subtitle">soft paws, dramatic wisdom, mysterious vibes</p>
 
-  .dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:#bfaea0;
-    animation:dots 1s infinite;
-  }
+    <div class="q-row">
+      <input id="catq" type="text" placeholder="Ask Mochi anything..." />
+      <button class="ask-btn" id="askBtn" type="button">Ask Mochi</button>
+    </div>
 
-  .dot:nth-child(2){ animation-delay:.2s; }
-  .dot:nth-child(3){ animation-delay:.4s; }
-
-  .hint-text{
-    color:#9c877b;
-    font-size:12px;
-    text-align:center;
-    margin:0;
-  }
-
-  @keyframes floaty{
-    0%,100%{ transform:translateY(0); }
-    50%{ transform:translateY(-5px); }
-  }
-
-  @keyframes tailWiggle{
-    0%,100%{ transform:rotate(0deg); }
-    25%{ transform:rotate(-8deg); }
-    50%{ transform:rotate(4deg); }
-    75%{ transform:rotate(-5deg); }
-  }
-
-  @keyframes blushPulse{
-    0%,100%{ transform:scale(1); opacity:.85; }
-    50%{ transform:scale(1.1); opacity:1; }
-  }
-
-  @keyframes dots{
-    0%,80%,100%{ transform:translateY(0); opacity:.45; }
-    40%{ transform:translateY(-4px); opacity:1; }
-  }
-
-  @media (max-width:640px){
-    .cat-wrap{ margin:12px; padding:20px 14px 18px; border-radius:22px; gap:12px; }
-    .cat-title{ font-size:23px; }
-    .cat-subtitle{ font-size:14px; }
-    .q-row{ flex-direction:column; }
-    .ask-btn{ width:100%; }
-    .cat-zone{ width:190px; height:190px; }
-    .cat-container{ width:180px; height:180px; }
-    .answer-shell{ min-height:84px; border-radius:20px; }
-    .answer-bubble{ font-size:15px; }
-  }
-</style>
-
-<div class="cat-wrap">
-  <h2 class="cat-title">Mochi the Siamese Psychic </h2>
-  <p class="cat-subtitle">the all knowing kitty </p>
-
-  <div class="q-row">
-    <input id="catq" type="text" placeholder="Ask Mochi anything..." />
-    <button class="ask-btn" id="askBtn" type="button">Ask Mochi</button>
-  </div>
-
-  <div class="cat-zone">
-    <div class="cat-container" id="catWrap" role="button" tabindex="0" aria-label="Ask Mochi">
+    <div class="cat-wrap" id="catWrap" role="button" tabindex="0" aria-label="Ask Mochi">
       <svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" id="catSvg">
         <path id="tail" d="M129 113 C149 103, 158 129, 149 147 C143 160, 130 159, 128 148 C126 140, 136 135, 138 128 C140 122, 137 117, 129 113Z"
-          fill="#3b2d2d" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          fill="#b997aa" stroke="#9f7f92" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
         <path d="M50 42 C57 23, 74 18, 88 31 C101 18, 123 20, 132 40 C141 59, 140 95, 131 110 C122 125, 102 128, 88 128
                  C73 128, 53 124, 45 109 C37 93, 38 60, 50 42Z"
-          fill="#f3eee2" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          fill="#fffafc" stroke="#b191a2" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
-        <path d="M50 42 C58 32, 70 33, 74 45 C66 49, 56 50, 50 42Z" fill="#4c3d37"/>
-        <path d="M126 42 C120 33, 108 33, 103 45 C112 49, 121 50, 126 42Z" fill="#4c3d37"/>
+        <path d="M50 42 C58 32, 70 33, 74 45 C66 49, 56 50, 50 42Z" fill="#caa8b9"/>
+        <path d="M126 42 C120 33, 108 33, 103 45 C112 49, 121 50, 126 42Z" fill="#caa8b9"/>
 
-        <ellipse cx="88" cy="70" rx="44" ry="30" fill="#8a7266"/>
+        <ellipse cx="88" cy="70" rx="44" ry="30" fill="#ccb5c2"/>
 
-        <ellipse cx="66" cy="70" rx="14" ry="12" fill="#0f0f0f"/>
-        <ellipse cx="110" cy="70" rx="14" ry="12" fill="#0f0f0f"/>
+        <ellipse cx="66" cy="70" rx="14" ry="12" fill="#8f7383"/>
+        <ellipse cx="110" cy="70" rx="14" ry="12" fill="#8f7383"/>
         <circle cx="61" cy="66" r="4.2" fill="#fff"/>
         <circle cx="106" cy="66" r="4.2" fill="#fff"/>
         <circle cx="69" cy="73" r="2.2" fill="#fff"/>
         <circle cx="114" cy="73" r="2.2" fill="#fff"/>
 
-        <ellipse class="blush" cx="56" cy="86" rx="7.5" ry="3.5" fill="#e59aa6"/>
-        <ellipse class="blush" cx="120" cy="86" rx="7.5" ry="3.5" fill="#e59aa6"/>
+        <ellipse class="blush" cx="56" cy="86" rx="7.5" ry="3.5" fill="#efc0cf"/>
+        <ellipse class="blush" cx="120" cy="86" rx="7.5" ry="3.5" fill="#efc0cf"/>
 
-        <!-- cat nose + mouth -->
-        <path d="M88 77 L83.8 81.2 L92.2 81.2 Z" fill="#F29BA8" stroke="#171313" stroke-width="1.6" stroke-linejoin="round"/>
-        <path d="M88 81.2 L88 84.4" stroke="#171313" stroke-width="2.4" stroke-linecap="round"/>
-        <path d="M88 84.4 Q83.8 88.6 79.8 85.6" stroke="#171313" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-        <path d="M88 84.4 Q92.2 88.6 96.2 85.6" stroke="#171313" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+        <path d="M88 77 L83.8 81.2 L92.2 81.2 Z" fill="#f6b7c6" stroke="#a27f92" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M88 81.2 L88 84.4" stroke="#9c7a8d" stroke-width="2.3" stroke-linecap="round"/>
+        <path d="M88 84.4 Q83.8 88.6 79.8 85.6" stroke="#9c7a8d" stroke-width="2.7" fill="none" stroke-linecap="round"/>
+        <path d="M88 84.4 Q92.2 88.6 96.2 85.6" stroke="#9c7a8d" stroke-width="2.7" fill="none" stroke-linecap="round"/>
 
-        <!-- white whiskers -->
-        <line x1="74" y1="83.5" x2="52" y2="80.5" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
-        <line x1="74" y1="87.5" x2="50" y2="88.5" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
-        <line x1="74" y1="91.5" x2="53" y2="96.0" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
-        <line x1="102" y1="83.5" x2="124" y2="80.5" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
-        <line x1="102" y1="87.5" x2="126" y2="88.5" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
-        <line x1="102" y1="91.5" x2="123" y2="96.0" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="74" y1="83.5" x2="52" y2="80.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="74" y1="87.5" x2="50" y2="88.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="74" y1="91.5" x2="53" y2="96.0" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="102" y1="83.5" x2="124" y2="80.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="102" y1="87.5" x2="126" y2="88.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="102" y1="91.5" x2="123" y2="96.0" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
 
         <path d="M52 111 C45 120, 42 136, 49 148 C58 162, 76 162, 92 161 C109 161, 121 160, 128 152 C135 145, 136 131, 131 119
                  C126 108, 115 102, 101 101 C84 99, 62 100, 52 111Z"
-          fill="#f3eee2" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          fill="#fffafc" stroke="#b191a2" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
-        <path d="M67 155 C70 145, 78 145, 82 154 C78 160, 71 160, 67 155Z" fill="#7a6254"/>
-        <path d="M104 134 C102 142, 100 148, 96 152" stroke="#111" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M67 155 C70 145, 78 145, 82 154 C78 160, 71 160, 67 155Z" fill="#cab0be"/>
+        <path d="M104 134 C102 142, 100 148, 96 152" stroke="#aa8a9c" stroke-width="6" fill="none" stroke-linecap="round"/>
       </svg>
     </div>
-  </div>
 
-  <div class="answer-shell">
-    <div class="answer-bubble" id="catAnswer">Mochi is listening...</div>
-  </div>
+    <div class="answer-shell">
+      <div class="answer" id="catAnswer">Mochi is listening...</div>
+    </div>
 
-  <p class="hint-text">Tap Mochi or press Enter</p>
-</div>
+    <p class="hint">Tap Mochi or press Enter</p>
+  </main>
 
-<script>
-  const all = [
-    ["the council of cats met... we're still confused, but it's a yes", "yes"],
-    ["i paused mid-lick for this... no", "no"],
-    ["the zoomies have spoken... chaotic yes", "yes"],
-    ["i saw this in a dream between naps... don't do it", "no"],
-    ["even the red laser dot hesitated... that's a no", "no"],
-    ["i consulted the forbidden cardboard box... yes, but barely", "maybe"],
-    ["my last brain cell says yes, my dignity says no", "maybe"],
-    ["i knocked over three things thinking about this... still no", "no"],
-    ["the ancient scratching post has no record of this ending well", "no"],
-    ["i just stared at nothing for 12 minutes... the answer is yes", "yes"],
-    ["my whiskers formed a triangle... that's a sign, but unclear", "maybe"],
-    ["i tried to ignore this question... it followed me, so yes", "yes"],
-    ["the ghosts in the hallway voted no", "no"],
-    ["i would chase this like a moth... which is concerning, but yes", "yes"],
-    ["the vibes are off, and i am rarely wrong", "no"],
-    ["i screamed internally and externally... no", "no"],
-    ["i licked my paw, thought deeply... still a bad idea", "no"],
-    ["the sunbeam moved and so should you... no", "no"],
-    ["i knocked this timeline into another dimension... yes, in that one", "yes"],
-    ["i heard a can open in the distance... that means yes", "yes"],
-    ["i have never been more dramatic about a no", "no"],
-    ["i stared directly into your soul for this... don't", "no"],
-    ["the answer arrived, then left... i think it was no", "maybe"],
-    ["i would do it, which is exactly why you shouldn't", "no"],
-    ["the vibes said yes, but they were giggling", "maybe"],
-    ["i just sprinted across the house... take that as a warning", "maybe"],
-    ["this feels like when i sprint into a wall... no", "no"],
-    ["i fell off something mid-thought... that's your sign", "maybe"],
-    ["the answer is yes, but i refuse to take responsibility", "yes"],
-    ["i am both impressed and concerned... no", "no"],
-    ["i knocked fate off the counter... it was fragile anyway", "maybe"],
-    ["the answer changed three times... currently no", "no"],
-    ["i would bet one (1) life on this... cautious yes", "yes"],
-    ["the universe blinked slowly at me... that's a yes", "yes"],
-    ["i tried to bury this answer... it came back, so no", "no"],
-    ["i'm purring, which is suspicious... yes", "yes"],
-    ["the silence was loud... do not proceed", "no"],
-    ["i looked away dramatically... that means no", "no"],
-    ["the prophecy is smudged, but it says \"eh\"", "maybe"],
-    ["i am zooming in circles... interpret that how you want", "maybe"]
-  ];
+  <script>
+    const all = [
+      ["the council of cats met... we're still confused, but it's a yes", "yes"],
+      ["i paused mid-lick for this... no", "no"],
+      ["the zoomies have spoken... chaotic yes", "yes"],
+      ["i saw this in a dream between naps... don't do it", "no"],
+      ["even the red laser dot hesitated... that's a no", "no"],
+      ["i consulted the forbidden cardboard box... yes, but barely", "maybe"],
+      ["my last brain cell says yes, my dignity says no", "maybe"],
+      ["i knocked over three things thinking about this... still no", "no"],
+      ["the ancient scratching post has no record of this ending well", "no"],
+      ["i just stared at nothing for 12 minutes... the answer is yes", "yes"],
+      ["my whiskers formed a triangle... that's a sign, but unclear", "maybe"],
+      ["i tried to ignore this question... it followed me, so yes", "yes"],
+      ["the ghosts in the hallway voted no", "no"],
+      ["i would chase this like a moth... which is concerning, but yes", "yes"],
+      ["the vibes are off, and i am rarely wrong", "no"],
+      ["i screamed internally and externally... no", "no"],
+      ["i licked my paw, thought deeply... still a bad idea", "no"],
+      ["the sunbeam moved and so should you... no", "no"],
+      ["i knocked this timeline into another dimension... yes, in that one", "yes"],
+      ["i heard a can open in the distance... that means yes", "yes"],
+      ["i have never been more dramatic about a no", "no"],
+      ["i stared directly into your soul for this... don't", "no"],
+      ["the answer arrived, then left... i think it was no", "maybe"],
+      ["i would do it, which is exactly why you shouldn't", "no"],
+      ["the vibes said yes, but they were giggling", "maybe"],
+      ["i just sprinted across the house... take that as a warning", "maybe"],
+      ["this feels like when i sprint into a wall... no", "no"],
+      ["i fell off something mid-thought... that's your sign", "maybe"],
+      ["the answer is yes, but i refuse to take responsibility", "yes"],
+      ["i am both impressed and concerned... no", "no"],
+      ["i knocked fate off the counter... it was fragile anyway", "maybe"],
+      ["the answer changed three times... currently no", "no"],
+      ["i would bet one (1) life on this... cautious yes", "yes"],
+      ["the universe blinked slowly at me... that's a yes", "yes"],
+      ["i tried to bury this answer... it came back, so no", "no"],
+      ["i'm purring, which is suspicious... yes", "yes"],
+      ["the silence was loud... do not proceed", "no"],
+      ["i looked away dramatically... that means no", "no"],
+      ["the prophecy is smudged, but it says \"eh\"", "maybe"],
+      ["i am zooming in circles... interpret that how you want", "maybe"]
+    ];
 
-  const toneStyle = {
-    yes: { bg: "var(--yes-bg)", bd: "var(--yes-bd)", tx: "var(--yes-tx)" },
-    no: { bg: "var(--no-bg)", bd: "var(--no-bd)", tx: "var(--no-tx)" },
-    maybe: { bg: "var(--maybe-bg)", bd: "var(--maybe-bd)", tx: "var(--maybe-tx)" }
-  };
+    const toneStyle = {
+      yes:   { bg: "var(--yes-bg)",   bd: "var(--yes-line)",   tx: "var(--yes-text)" },
+      no:    { bg: "var(--no-bg)",    bd: "var(--no-line)",    tx: "var(--no-text)" },
+      maybe: { bg: "var(--maybe-bg)", bd: "var(--maybe-line)", tx: "var(--maybe-text)" }
+    };
 
-  let used = [];
-  let busy = false;
+    let used = [];
+    let busy = false;
 
-  function pickFresh() {
-    if (used.length === all.length) used = [];
-    const pool = all.filter((_, i) => !used.includes(i));
-    const pick = pool[Math.floor(Math.random() * pool.length)];
-    used.push(all.indexOf(pick));
-    return pick;
-  }
+    function pickFresh() {
+      if (used.length === all.length) used = [];
+      const pool = all.filter((_, i) => !used.includes(i));
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      used.push(all.indexOf(pick));
+      return pick;
+    }
 
-  function typingDots(el) {
-    el.innerHTML = '<span class="typing">Mochi is thinking<span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
-  }
+    function typingDots(el) {
+      el.innerHTML = '<span class="typing">Mochi is thinking<span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
+    }
 
-  function typeText(el, text, speed) {
-    el.textContent = "";
-    let i = 0;
-    const timer = setInterval(() => {
-      el.textContent += text[i] || "";
-      i++;
-      if (i > text.length) clearInterval(timer);
-    }, speed);
-  }
+    function typeText(el, text, speed = 20) {
+      el.textContent = "";
+      let i = 0;
+      const t = setInterval(() => {
+        el.textContent += text[i] || "";
+        i++;
+        if (i > text.length) clearInterval(t);
+      }, speed);
+    }
 
-  function askCat() {
-    if (busy) return;
-    busy = true;
+    function askCat() {
+      if (busy) return;
+      busy = true;
+      const wrap = document.getElementById("catWrap");
+      const ans = document.getElementById("catAnswer");
 
-    const wrap = document.getElementById("catWrap");
-    const ans = document.getElementById("catAnswer");
-
-    wrap.classList.add("thinking");
-    typingDots(ans);
-
-    setTimeout(() => {
-      const [text, tone] = pickFresh();
-      const t = toneStyle[tone];
-
-      wrap.classList.remove("thinking");
-      wrap.classList.add("responding");
-
-      ans.style.background = t.bg;
-      ans.style.borderColor = t.bd;
-      ans.style.color = t.tx;
-
-      typeText(ans, text, 20);
+      wrap.classList.add("thinking");
+      typingDots(ans);
 
       setTimeout(() => {
-        wrap.classList.remove("responding");
-        busy = false;
-      }, 950);
-    }, 900);
-  }
+        const [text, tone] = pickFresh();
+        const toneSet = toneStyle[tone];
+        wrap.classList.remove("thinking");
+        wrap.classList.add("responding");
 
-  document.getElementById("askBtn").addEventListener("click", askCat);
-  document.getElementById("catWrap").addEventListener("click", askCat);
-  document.getElementById("catWrap").addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      askCat();
+        ans.style.background = toneSet.bg;
+        ans.style.borderColor = toneSet.bd;
+        ans.style.color = toneSet.tx;
+
+        typeText(ans, text, 20);
+
+        setTimeout(() => {
+          wrap.classList.remove("responding");
+          busy = false;
+        }, 900);
+      }, 850);
     }
-  });
-  document.getElementById("catq").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") askCat();
-  });
-</script>
+
+    document.getElementById("askBtn").addEventListener("click", askCat);
+    document.getElementById("catWrap").addEventListener("click", askCat);
+    document.getElementById("catWrap").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        askCat();
+      }
+    });
+    document.getElementById("catq").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") askCat();
+    });
+  </script>
+</body>
+</html>
 
 
