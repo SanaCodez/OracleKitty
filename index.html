@@ -1,3 +1,4 @@
+<!-- index.html (full replacement) -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Poppins:wght@500;700&family=Quicksand:wght@500;700&display=swap');
@@ -248,7 +249,6 @@
 
         <ellipse cx="88" cy="70" rx="44" ry="30" fill="#8a7266"/>
 
-        <!-- kawaii eyes (no blinking, no blue) -->
         <ellipse cx="66" cy="70" rx="14" ry="12" fill="#0f0f0f"/>
         <ellipse cx="110" cy="70" rx="14" ry="12" fill="#0f0f0f"/>
         <circle cx="61" cy="66" r="4.2" fill="#fff"/>
@@ -256,23 +256,29 @@
         <circle cx="69" cy="73" r="2.2" fill="#fff"/>
         <circle cx="114" cy="73" r="2.2" fill="#fff"/>
 
-        <ellipse cx="56" cy="86" rx="7.5" ry="3.5" fill="#e59aa6"/>
-        <ellipse cx="120" cy="86" rx="7.5" ry="3.5" fill="#e59aa6"/>
+        <ellipse class="blush" cx="56" cy="86" rx="7.5" ry="3.5" fill="#e59aa6"/>
+        <ellipse class="blush" cx="120" cy="86" rx="7.5" ry="3.5" fill="#e59aa6"/>
 
-        <path d="M83 82 Q88 86 93 82" stroke="#171313" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-        <path d="M78 80 Q82 82 84 79" stroke="#171313" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-        <path d="M98 80 Q94 82 92 79" stroke="#171313" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        <!-- cat nose + mouth -->
+        <path d="M88 77 L83.8 81.2 L92.2 81.2 Z" fill="#F29BA8" stroke="#171313" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M88 81.2 L88 84.4" stroke="#171313" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M88 84.4 Q83.8 88.6 79.8 85.6" stroke="#171313" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+        <path d="M88 84.4 Q92.2 88.6 96.2 85.6" stroke="#171313" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+
+        <!-- white whiskers -->
+        <line x1="74" y1="83.5" x2="52" y2="80.5" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="74" y1="87.5" x2="50" y2="88.5" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="74" y1="91.5" x2="53" y2="96.0" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="102" y1="83.5" x2="124" y2="80.5" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="102" y1="87.5" x2="126" y2="88.5" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
+        <line x1="102" y1="91.5" x2="123" y2="96.0" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round"/>
 
         <path d="M52 111 C45 120, 42 136, 49 148 C58 162, 76 162, 92 161 C109 161, 121 160, 128 152 C135 145, 136 131, 131 119
                  C126 108, 115 102, 101 101 C84 99, 62 100, 52 111Z"
           fill="#f3eee2" stroke="#111" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
         <path d="M67 155 C70 145, 78 145, 82 154 C78 160, 71 160, 67 155Z" fill="#7a6254"/>
-
         <path d="M104 134 C102 142, 100 148, 96 152" stroke="#111" stroke-width="6" fill="none" stroke-linecap="round"/>
-
-        <ellipse class="blush" cx="56" cy="86" rx="7.5" ry="3.5" fill="#e59aa6" opacity=".55"/>
-        <ellipse class="blush" cx="120" cy="86" rx="7.5" ry="3.5" fill="#e59aa6" opacity=".55"/>
       </svg>
     </div>
   </div>
@@ -372,6 +378,7 @@
     setTimeout(() => {
       const [text, tone] = pickFresh();
       const t = toneStyle[tone];
+
       wrap.classList.remove("thinking");
       wrap.classList.add("responding");
 
@@ -400,4 +407,5 @@
     if (e.key === "Enter") askCat();
   });
 </script>
+
 
