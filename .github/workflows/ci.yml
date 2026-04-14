@@ -1,0 +1,20 @@
+# .github/workflows/your-workflow.yml (replace your old action versions to remove Node 20 warning)
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: echo "Add your build/test steps here"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: build-output
+          path: .
